@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_home.xml" value="0.17916666666666667" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_buttom_navigation_view.xml" value="0.19322916666666667" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_center_viewpager.xml" value="0.19322916666666667" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_top_tabs.xml" value="0.19322916666666667" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
