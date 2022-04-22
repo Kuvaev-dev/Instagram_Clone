@@ -7,7 +7,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/bottomNavViewBar"
-            android:background="@color/material_dynamic_primary50">
+            android:background="@drawable/white_grey_border_top">
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>
     </RelativeLayout>
