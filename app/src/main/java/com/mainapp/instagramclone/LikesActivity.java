@@ -1,24 +1,25 @@
 package com.mainapp.instagramclone;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 
-public class HomeActivity extends AppCompatActivity {
-    private static final String TAG = "HomeActivity";
-    private static final int ACTIVITY_NUM = 0;
+public class LikesActivity extends AppCompatActivity {
+    private static final String TAG = "LikesActivity";
+    private static final int ACTIVITY_NUM = 3;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Log.d(TAG, "onCreate: starting.");
+        Log.d(TAG, "onCreate: started.");
         setupBottomNavigationView();
     }
 
@@ -29,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.d(TAG, "SetUpBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(HomeActivity.this, bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(LikesActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
