@@ -1,4 +1,4 @@
-package com.mainapp.instagramclone;
+package com.mainapp.instagramclone.Search;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 
-public class LikesActivity extends AppCompatActivity {
-    private static final String TAG = "LikesActivity";
-    private static final int ACTIVITY_NUM = 3;
+public class SearchActivity extends AppCompatActivity {
+    private static final String TAG = "SearchActivity";
+    private static final int ACTIVITY_NUM = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class LikesActivity extends AppCompatActivity {
         Log.d(TAG, "SetUpBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(LikesActivity.this, bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(SearchActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);

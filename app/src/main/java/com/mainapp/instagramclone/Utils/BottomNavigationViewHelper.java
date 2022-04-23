@@ -3,18 +3,14 @@ package com.mainapp.instagramclone.Utils;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-import com.mainapp.instagramclone.HomeActivity;
-import com.mainapp.instagramclone.LikesActivity;
-import com.mainapp.instagramclone.ProfileActivity;
+import com.mainapp.instagramclone.Home.HomeActivity;
+import com.mainapp.instagramclone.Likes.LikesActivity;
+import com.mainapp.instagramclone.Profile.ProfileActivity;
 import com.mainapp.instagramclone.R;
-import com.mainapp.instagramclone.SearchActivity;
-import com.mainapp.instagramclone.ShareActivity;
+import com.mainapp.instagramclone.Search.SearchActivity;
+import com.mainapp.instagramclone.Share.ShareActivity;
 
 public class BottomNavigationViewHelper {
     private static final String TAG = "BottomNavigationViewHel";

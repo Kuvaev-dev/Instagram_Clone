@@ -1,4 +1,4 @@
-package com.mainapp.instagramclone;
+package com.mainapp.instagramclone.Profile;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 
 public class ProfileActivity extends AppCompatActivity {
