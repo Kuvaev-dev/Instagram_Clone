@@ -6,6 +6,7 @@
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/white_grey_border_bottom.xml" value="0.1205" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/white_grey_border_top.xml" value="0.1205" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_home.xml" value="0.17916666666666667" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_profile.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/fragment_camera.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/fragment_home.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/fragment_messages.xml" value="0.19322916666666667" />
@@ -13,8 +14,10 @@
         <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_buttom_navigation_view.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_center_viewpager.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_top_tabs.xml" value="0.19322916666666667" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_profilebar.xml" value="0.225669099756691" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/white_grey_border_bottom.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.19322916666666667" />
+        <entry key="..\:/InstagramClone/app/src/main/res/menu/profile_menu.xml" value="0.19322916666666667" />
       </map>
     </option>
   </component>
