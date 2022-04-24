@@ -39,10 +39,10 @@ public class HomeActivity extends AppCompatActivity {
         sectionPagerAdapter.addFragment(new HomeFragment());
         sectionPagerAdapter.addFragment(new MessagesFragment());
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
+        ViewPager viewPager = findViewById(R.id.container);
         viewPager.setAdapter(sectionPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(R.drawable.ic_camera);
