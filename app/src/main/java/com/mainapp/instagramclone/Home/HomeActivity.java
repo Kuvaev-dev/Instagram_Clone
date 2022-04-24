@@ -12,6 +12,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
+import com.mainapp.instagramclone.Utils.SectionPagerAdapter;
 
 import java.util.Objects;
 

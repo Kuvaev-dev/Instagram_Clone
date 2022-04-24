@@ -4,20 +4,29 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.mainapp.instagramclone.R;
+import com.mainapp.instagramclone.Utils.SectionStatePagerAdapter;
 
 import java.util.ArrayList;
 
 public class AccountSettingsActivity extends AppCompatActivity {
     private static final String TAG = "AccountSettingsActivity";
+
     private Context context;
+    private SectionStatePagerAdapter sectionStatePagerAdapter;
+    private ViewPager mViewPager;
+    private RelativeLayout mRelativeLayout;
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,7 +34,11 @@ public class AccountSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_settings);
         context = AccountSettingsActivity.this;
         Log.d(TAG, "onCreate: started.");
+        mViewPager = findViewById(R.id.container);
+        mRelativeLayout = findViewById(R.id.relLayout1);
+
         setupSettingsList();
+        setupFragments();
 
         ImageView backArrow = findViewById(R.id.backArrow);
         backArrow.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +48,19 @@ public class AccountSettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void setupFragments() {
+        sectionStatePagerAdapter = new SectionStatePagerAdapter(getSupportFragmentManager());
+        sectionStatePagerAdapter.addFragment(new EditProfileFragment(), getString(R.string.edit_profile));
+        sectionStatePagerAdapter.addFragment(new SignOutFragment(), getString(R.string.sign_out));
+    }
+
+    private void setupViewPager(int fragmentNumber) {
+        mRelativeLayout.setVisibility(View.GONE);
+        Log.d(TAG, "setupViewPager: navigating to fragment # " + fragmentNumber);
+        mViewPager.setAdapter(sectionStatePagerAdapter);
+        mViewPager.setCurrentItem(fragmentNumber);
     }
 
     private void setupSettingsList() {
@@ -47,5 +73,13 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, options);
         listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Log.d(TAG, "onItemClick: navigating to fragment " + position);
+                setupViewPager(position);
+            }
+        });
     }
 }
