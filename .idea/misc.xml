@@ -5,18 +5,22 @@
       <map>
         <entry key="..\:/InstagramClone/app/src/main/res/drawable-v24/black_border.xml" value="0.115" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable-v24/grey_border.xml" value="0.115" />
+        <entry key="..\:/InstagramClone/app/src/main/res/drawable/grey_border_bottom.xml" value="0.115" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/white_grey_border_bottom.xml" value="0.1205" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/white_grey_border_top.xml" value="0.1205" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_account_settings.xml" value="0.1586147926464301" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_home.xml" value="0.17916666666666667" />
-        <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_profile.xml" value="0.19322916666666667" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_profile.xml" value="0.33" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/fragment_camera.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/fragment_home.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/fragment_messages.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_bottom_navigation_view.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_buttom_navigation_view.xml" value="0.19322916666666667" />
-        <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_center_profile.xml" value="0.22" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_center_accountsettings.xml" value="0.1586147926464301" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_center_profile.xml" value="0.2" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_center_viewpager.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_top_tabs.xml" value="0.19322916666666667" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_accountsettingstoolbar.xml" value="0.1586147926464301" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_profile.xml" value="0.47717842323651455" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_profilebar.xml" value="0.225669099756691" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/white_grey_border_bottom.xml" value="0.19322916666666667" />

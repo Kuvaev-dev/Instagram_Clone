@@ -1,9 +1,12 @@
 package com.mainapp.instagramclone.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,17 +30,17 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setupToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.profileToolBar);
+        Toolbar toolbar = findViewById(R.id.profileToolBar);
         setSupportActionBar(toolbar);
-        toolbar.setOnMenuItemClickListener(menuItem -> {
-            Log.d(TAG, "onMenuItemClick: clicked menu item: " + menuItem);
 
-            switch (menuItem.getItemId()) {
-                case R.id.profileMenu:
-                    Log.d(TAG, "onMenuItemClick: Navigating to profile preferences");
+        ImageView profileMenu = findViewById(R.id.profileMenu);
+        profileMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: navigating to account settings");
+                Intent intent = new Intent(ProfileActivity.this, AccountSettingsActivity.class);
+                startActivity(intent);
             }
-
-            return false;
         });
     }
 
@@ -52,11 +55,5 @@ public class ProfileActivity extends AppCompatActivity {
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.profile_menu, menu);
-        return true;
     }
 }
