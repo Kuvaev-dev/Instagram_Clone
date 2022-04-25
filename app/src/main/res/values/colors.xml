@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#BFBFBF</color>
     <color name="link_blue">#0052CC</color>
+    <color name="colorAccent">#00FFE7</color>
 </resources>

@@ -6,10 +6,13 @@
         <entry key="..\:/InstagramClone/app/src/main/res/drawable-v24/black_border.xml" value="0.115" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable-v24/grey_border.xml" value="0.115" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/grey_border_bottom.xml" value="0.115" />
+        <entry key="..\:/InstagramClone/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1275" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/white_grey_border_bottom.xml" value="0.1205" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/white_grey_border_top.xml" value="0.1205" />
+        <entry key="..\:/InstagramClone/app/src/main/res/drawable/white_rounded_button.xml" value="0.1275" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_account_settings.xml" value="0.1586147926464301" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_home.xml" value="0.17916666666666667" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_profile.xml" value="0.33" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/fragment_camera.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/fragment_edit_profile.xml" value="0.1586147926464301" />
