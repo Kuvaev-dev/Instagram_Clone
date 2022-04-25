@@ -25,6 +25,8 @@ import java.util.ArrayList;
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "ProfileActivity";
     private static final int ACTIVITY_NUM = 4;
+    private static final int NUM_GRID_COLUMNS = 3;
+
     private ImageView profilePhoto;
     private ProgressBar mProgressBar;
 
@@ -52,11 +54,15 @@ public class ProfileActivity extends AppCompatActivity {
         imgURLs.add("https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
         imgURLs.add("https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
 
-        setupGridImage(imgURLs);
+        setupImageGrid(imgURLs);
     }
 
-    private void setupGridImage(ArrayList<String> imgURLs) {
+    private void setupImageGrid(ArrayList<String> imgURLs) {
         GridView gridView = findViewById(R.id.gridView);
+        int gridWidth = getResources().getDisplayMetrics().widthPixels;
+        int imageWidth = gridWidth / NUM_GRID_COLUMNS;
+        gridView.setColumnWidth(imageWidth);
+
         GridImageAdapter adapter = new GridImageAdapter(ProfileActivity.this, R.layout.layout_grid_imageview, " ", imgURLs);
         gridView.setAdapter(adapter);
     }
