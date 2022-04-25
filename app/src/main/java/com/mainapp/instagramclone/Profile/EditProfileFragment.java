@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.UniversalImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class EditProfileFragment extends Fragment {
     private static final String TAG = "EditProfileFragment";
@@ -24,14 +23,20 @@ public class EditProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
         profilePhoto = view.findViewById(R.id.profile_photo);
-        initImageLoader();
-        setProfileImage();
-        return view;
-    }
 
-    private void initImageLoader() {
-        UniversalImageLoader universalImageLoader = new UniversalImageLoader(getActivity());
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+        setProfileImage();
+
+        // Navigating arrow to ProfileActivity
+        ImageView backArrow = view.findViewById(R.id.backArrow);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: navigating back to ProfileActivity");
+                getActivity().finish();
+            }
+        });
+
+        return view;
     }
 
     private void setProfileImage() {
