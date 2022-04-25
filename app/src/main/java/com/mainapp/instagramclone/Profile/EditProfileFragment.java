@@ -20,7 +20,7 @@ public class EditProfileFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) throws NullPointerException {
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
         profilePhoto = view.findViewById(R.id.profile_photo);
 
