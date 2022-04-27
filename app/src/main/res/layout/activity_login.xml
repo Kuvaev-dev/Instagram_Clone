@@ -42,7 +42,7 @@
             android:layout_marginBottom="8dp">
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -87,5 +87,6 @@
         android:layout_alignBottom="@id/progressbar"
         android:layout_alignEnd="@id/progressbar"
         android:layout_alignStart="@id/progressbar"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:id="@+id/pleaseWait"/>
 </RelativeLayout>

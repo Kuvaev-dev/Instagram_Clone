@@ -123,6 +123,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authStateListener);
+        checkCurrentUser(auth.getCurrentUser());
     }
 
     @Override
