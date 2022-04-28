@@ -1,6 +1,5 @@
 package com.mainapp.instagramclone.Home;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -103,19 +102,16 @@ public class HomeActivity extends AppCompatActivity {
     private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
         auth = FirebaseAuth.getInstance();
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+        authStateListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                // Check if user is logged in
-                checkCurrentUser(user);
+            // Check if user is logged in
+            checkCurrentUser(user);
 
-                if (user != null)
-                    Log.d(TAG, "onAuthStateChanged: signed in: " + user.getUid());
-                else
-                    Log.d(TAG, "onAuthStateChanged: signed out.");
-            }
+            if (user != null)
+                Log.d(TAG, "onAuthStateChanged: signed in: " + user.getUid());
+            else
+                Log.d(TAG, "onAuthStateChanged: signed out.");
         };
     }
 

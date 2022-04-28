@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
@@ -47,12 +46,9 @@ public class AccountSettingsActivity extends AppCompatActivity {
         setupFragments();
 
         ImageView backArrow = findViewById(R.id.backArrow);
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: navigating to 'ProfileActivity'");
-                finish();
-            }
+        backArrow.setOnClickListener(view -> {
+            Log.d(TAG, "onClick: navigating to 'ProfileActivity'");
+            finish();
         });
     }
 
@@ -80,12 +76,9 @@ public class AccountSettingsActivity extends AppCompatActivity {
         ArrayAdapter arrayAdapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, options);
         listView.setAdapter(arrayAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.d(TAG, "onItemClick: navigating to fragment " + position);
-                setupViewPager(position);
-            }
+        listView.setOnItemClickListener((adapterView, view, position, id) -> {
+            Log.d(TAG, "onItemClick: navigating to fragment " + position);
+            setupViewPager(position);
         });
     }
 

@@ -84,13 +84,10 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ImageView profileMenu = findViewById(R.id.profileMenu);
-        profileMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: navigating to account settings");
-                Intent intent = new Intent(ProfileActivity.this, AccountSettingsActivity.class);
-                startActivity(intent);
-            }
+        profileMenu.setOnClickListener(view -> {
+            Log.d(TAG, "onClick: navigating to account settings");
+            Intent intent = new Intent(ProfileActivity.this, AccountSettingsActivity.class);
+            startActivity(intent);
         });
     }
 

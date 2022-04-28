@@ -4,12 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -57,16 +53,27 @@ public class FirebaseMethods {
 
     public void registerNewEmail(final String email, String password, final String username) {
         auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "onComplete: " + task.isSuccessful());
-                        if (!task.isSuccessful())
-                            Toast.makeText(mContext, "", Toast.LENGTH_SHORT).show();
-                        else if (task.isSuccessful()) {
-                            userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-                            Log.d(TAG, "onComplete: authstate changed " + userId);
-                        }
+                .addOnCompleteListener(task -> {
+                    Log.d(TAG, "onComplete: " + task.isSuccessful());
+                    if (!task.isSuccessful())
+                        Toast.makeText(mContext, "", Toast.LENGTH_SHORT).show();
+                    else if (task.isSuccessful()) {
+                        sendVerificationEmail();
+                        userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+                        Log.d(TAG, "onComplete: authstate changed " + userId);
+                    }
+                });
+    }
+
+    public void sendVerificationEmail() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null)
+            user.sendEmailVerification()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                    } else {
+                        Toast.makeText(mContext, "Couldn't send verification email.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
