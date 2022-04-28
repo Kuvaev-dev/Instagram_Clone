@@ -14,6 +14,7 @@ import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 
 public class LikesActivity extends AppCompatActivity {
     private static final String TAG = "LikesActivity";
+
     private static final int ACTIVITY_NUM = 3;
 
     @Override

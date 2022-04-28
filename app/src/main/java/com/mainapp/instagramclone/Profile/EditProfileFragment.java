@@ -35,7 +35,6 @@ public class EditProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
-
         return view;
     }
 

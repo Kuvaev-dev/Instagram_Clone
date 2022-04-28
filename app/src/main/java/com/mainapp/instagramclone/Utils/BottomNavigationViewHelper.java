@@ -47,7 +47,6 @@ public class BottomNavigationViewHelper {
                     context.startActivity(intent5);
                     break;
             }
-
             return false;
         });
     }
