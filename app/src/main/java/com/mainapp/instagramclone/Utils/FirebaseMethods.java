@@ -11,7 +11,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mainapp.instagramclone.Models.User;
+import com.mainapp.instagramclone.Models.UserAccountSettings;
+import com.mainapp.instagramclone.R;
 
 import java.util.Objects;
 
@@ -20,10 +24,13 @@ public class FirebaseMethods {
 
     private final FirebaseAuth auth;
     private final Context mContext;
+    private final DatabaseReference databaseReference;
     private String userId;
 
     public FirebaseMethods(Context context) {
         auth = FirebaseAuth.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
         mContext = context;
 
         if (auth.getCurrentUser() != null) {
@@ -35,7 +42,7 @@ public class FirebaseMethods {
         Log.d(TAG, "checkIfUsernameExists: check if " + username + " already exists.");
         User user = new User();
 
-        for (DataSnapshot ds: dataSnapshot.getChildren()) {
+        for (DataSnapshot ds: dataSnapshot.child(userId).getChildren()) {
             Log.d(TAG, "checkIfUsernameExists: data snapshot: " + ds);
             user.setUsername(Objects.requireNonNull(ds.getValue(User.class)).getUsername());
             Log.d(TAG, "checkIfUsernameExists: username: " + user.getUsername());
@@ -62,5 +69,20 @@ public class FirebaseMethods {
                         }
                     }
                 });
+    }
+
+    public void addNewUser(String email, String username, String description, String website, String profile_photo) {
+        User user = new User(userId, 1, email, StringManipulation.condenseUsername(username));
+        databaseReference.child(mContext.getString(R.string.dbname_users))
+                .child(userId)
+                .setValue(user);
+
+        UserAccountSettings userAccountSettings = new UserAccountSettings(
+                description, username, 0, 0, 0, profile_photo, username, website
+        );
+
+        databaseReference.child(mContext.getString(R.string.dbname_user_account_settings))
+                .child(userId)
+                .setValue(userAccountSettings);
     }
 }
