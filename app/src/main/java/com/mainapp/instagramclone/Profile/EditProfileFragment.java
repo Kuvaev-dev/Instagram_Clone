@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
 import com.mainapp.instagramclone.R;
@@ -27,17 +28,21 @@ import com.mainapp.instagramclone.Utils.FirebaseMethods;
 import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 import com.microprogramer.library.CircularImageView;
 
+import java.util.Objects;
+
 public class EditProfileFragment extends Fragment {
     private static final String TAG = "EditProfileFragment";
 
     private EditText editDisplayName, editUsername, editWebsite, editDescription, editEmail, editPhoneNumber;
     private TextView changeProfilePhoto;
     private CircularImageView profilePhoto;
+    private String userId;
 
     // Firebase
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseMethods firebaseMethods;
+    private DatabaseReference databaseReference;
 
     @Nullable
     @Override
@@ -65,11 +70,38 @@ public class EditProfileFragment extends Fragment {
         return view;
     }
 
-//    private void setProfileImage() {
-//        Log.d(TAG, "setProfileImage: setting profile image.");
-//        String imgURL = "image.winudf.com/v2/image1/Y29tLmdvb2dsZS5zYW1wbGVzLmFwcHMuYWRzc2NoZWRfaWNvbl8xNTcwNzg3MzQ0XzA0Ng/icon.png?fakeurl=1&h=240&type=webp";
-//        UniversalImageLoader.setImage(imgURL, profilePhoto, null, "https://");
-//    }
+    private void saveProfileSettings() {
+        final String displayName = editDisplayName.getText().toString();
+        final String username = editUsername.getText().toString();
+        final String website = editWebsite.getText().toString();
+        final String description = editDescription.getText().toString();
+        final String email = editEmail.getText().toString();
+        final long phoneNumber = Long.parseLong(editPhoneNumber.getText().toString());
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = new User();
+                for (DataSnapshot ds: snapshot.child(getString(R.string.dbname_users)).getChildren()) {
+                    if (ds.getKey().equals(userId)) {
+                        user.setUsername(Objects.requireNonNull(ds.getValue(User.class)).getUsername());
+                    }
+                }
+                Log.d(TAG, "onDataChange: CURRENT USERNAME: " + user.getUsername());
+
+                if (user.getUsername().equals(username)) {
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     private void setProfileWidgets(UserSettings userSettings) {
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from database: " + userSettings.toString());
@@ -92,7 +124,8 @@ public class EditProfileFragment extends Fragment {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
         auth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
+        databaseReference = firebaseDatabase.getReference();
+        userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
 
