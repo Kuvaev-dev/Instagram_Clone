@@ -94,7 +94,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setProfileWidgets(UserSettings userSettings) {
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from database: " + userSettings.toString());
+        //Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from database: " + userSettings.toString());
         //User user = userSettings.getUser();
         UserAccountSettings userAccountSettings = userSettings.getUserAccountSettings();
         UniversalImageLoader.setImage(userAccountSettings.getProfile_photo(), profilePhoto, null, "");
