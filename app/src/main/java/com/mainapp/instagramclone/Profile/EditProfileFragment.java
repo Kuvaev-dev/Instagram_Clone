@@ -34,7 +34,6 @@ public class EditProfileFragment extends Fragment {
     private static final String TAG = "EditProfileFragment";
 
     private EditText editDisplayName, editUsername, editWebsite, editDescription, editEmail, editPhoneNumber;
-    private TextView changeProfilePhoto;
     private CircularImageView profilePhoto;
     private String userId;
 
@@ -55,7 +54,7 @@ public class EditProfileFragment extends Fragment {
         editDescription = (EditText) view.findViewById(R.id.description);
         editEmail = (EditText) view.findViewById(R.id.email);
         editPhoneNumber = (EditText) view.findViewById(R.id.phoneNumber);
-        changeProfilePhoto = (TextView) view.findViewById(R.id.changeProfilePhoto);
+        TextView changeProfilePhoto = (TextView) view.findViewById(R.id.changeProfilePhoto);
         firebaseMethods = new FirebaseMethods(getActivity());
 
         // setProfileImage();
@@ -83,7 +82,7 @@ public class EditProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = new User();
                 for (DataSnapshot ds: snapshot.child(getString(R.string.dbname_users)).getChildren()) {
-                    if (ds.getKey().equals(userId)) {
+                    if (Objects.equals(ds.getKey(), userId)) {
                         user.setUsername(Objects.requireNonNull(ds.getValue(User.class)).getUsername());
                     }
                 }

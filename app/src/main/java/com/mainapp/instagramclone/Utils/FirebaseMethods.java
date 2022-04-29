@@ -61,7 +61,7 @@ public class FirebaseMethods {
                     else if (task.isSuccessful()) {
                         sendVerificationEmail();
                         userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-                        Log.d(TAG, "onComplete: authstate changed " + userId);
+                        Log.d(TAG, "onComplete: auth state changed " + userId);
                     }
                 });
     }
@@ -102,7 +102,7 @@ public class FirebaseMethods {
         for (DataSnapshot ds: dataSnapshot.getChildren()) {
             // user_account_settings node
             if (Objects.equals(ds.getKey(), mContext.getString(R.string.dbname_user_account_settings))) {
-                Log.d(TAG, "getUserAccountSettings: datasnapshot: " + ds);
+                Log.d(TAG, "getUserAccountSettings: data snapshot: " + ds);
                 try {
                     userAccountSettings.setDisplay_name(
                             Objects.requireNonNull(ds.child(userId)
@@ -145,7 +145,7 @@ public class FirebaseMethods {
                                     .getFollowing()
                     );
 
-                    Log.d(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + userAccountSettings.toString());
+                    Log.d(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + userAccountSettings);
                 } catch (NullPointerException exception) {
                     Log.d(TAG, "getUserAccountSettings: NullPointerException: " + exception.getMessage());
                 }
@@ -175,7 +175,7 @@ public class FirebaseMethods {
                                 .getUser_id()
                 );
 
-                Log.d(TAG, "getUserAccountSettings: retrieved user information: " + user.toString());
+                Log.d(TAG, "getUserAccountSettings: retrieved user information: " + user);
             }
         }
         return new UserSettings(user, userAccountSettings);
