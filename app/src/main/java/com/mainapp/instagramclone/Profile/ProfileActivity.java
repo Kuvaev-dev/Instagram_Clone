@@ -70,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
 //    }
 //
 //    private void setupImageGrid(ArrayList<String> imgURLs) {
-//        GridView gridView = findViewById(R.id.gridView);
+//        GridView gridView = (GridView) findViewById(R.id.gridView);
 //        int gridWidth = getResources().getDisplayMetrics().widthPixels;
 //        int imageWidth = gridWidth / NUM_GRID_COLUMNS;
 //        gridView.setColumnWidth(imageWidth);
@@ -86,16 +86,16 @@ public class ProfileActivity extends AppCompatActivity {
 //    }
 //
 //    private void setupActivityWidgets() {
-//        mProgressBar = findViewById(R.id.profileProgressBar);
+//        mProgressBar = (ProgressBar) findViewById(R.id.profileProgressBar);
 //        mProgressBar.setVisibility(View.GONE);
-//        profilePhoto = findViewById(R.id.profile_photo);
+//        profilePhoto = (ImageView) findViewById(R.id.profile_photo);
 //    }
 //
 //    private void setupToolBar() {
-//        Toolbar toolbar = findViewById(R.id.profileToolBar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.profileToolBar);
 //        setSupportActionBar(toolbar);
 //
-//        ImageView profileMenu = findViewById(R.id.profileMenu);
+//        ImageView profileMenu = (ImageView) findViewById(R.id.profileMenu);
 //        profileMenu.setOnClickListener(view -> {
 //            Log.d(TAG, "onClick: navigating to account settings");
 //            Intent intent = new Intent(ProfileActivity.this, AccountSettingsActivity.class);

@@ -28,8 +28,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.mainapp.instagramclone.Login.LoginActivity;
+import com.mainapp.instagramclone.Models.User;
+import com.mainapp.instagramclone.Models.UserAccountSettings;
+import com.mainapp.instagramclone.Models.UserSettings;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
+import com.mainapp.instagramclone.Utils.FirebaseMethods;
+import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 import com.microprogramer.library.CircularImageView;
 
 public class ProfileFragment extends Fragment {
@@ -40,36 +45,63 @@ public class ProfileFragment extends Fragment {
     private ImageView profileMenu;
     private Context context;
     private BottomNavigationViewEx bottomNavigationViewEx;
+    private TextView tDisplayName;
+    private TextView tUsername;
+    private TextView tWebsite;
+    private TextView tDescription;
+    private TextView tPosts;
+    private TextView tFollowers;
+    private TextView tFollowing;
+    private CircularImageView profilePhoto;
+    private ProgressBar progressBar;
+    private GridView gridView;
 
     // Firebase
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
+    private FirebaseMethods firebaseMethods;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        TextView tDisplayName = view.findViewById(R.id.display_name);
-        TextView tUsername = view.findViewById(R.id.username);
-        TextView tWebsite = view.findViewById(R.id.website);
-        TextView tDescription = view.findViewById(R.id.description);
-        TextView tPosts = view.findViewById(R.id.tvPosts);
-        TextView tFollowers = view.findViewById(R.id.tvFollowers);
-        TextView tFollowing = view.findViewById(R.id.tvFollowing);
-        CircularImageView profilePhoto = view.findViewById(R.id.profile_photo);
-        ProgressBar progressBar = view.findViewById(R.id.profileProgressBar);
-        GridView gridView = view.findViewById(R.id.gridView);
-        toolbar = view.findViewById(R.id.profileToolBar);
-        profileMenu = view.findViewById(R.id.profileMenu);
-        bottomNavigationViewEx = view.findViewById(R.id.bottomNavViewBar);
+        tDisplayName = (TextView) view.findViewById(R.id.display_name);
+        tUsername = (TextView) view.findViewById(R.id.username);
+        tWebsite = (TextView) view.findViewById(R.id.website);
+        tDescription = (TextView) view.findViewById(R.id.description);
+        tPosts = (TextView) view.findViewById(R.id.tvPosts);
+        tFollowers = (TextView) view.findViewById(R.id.tvFollowers);
+        tFollowing = (TextView) view.findViewById(R.id.tvFollowing);
+        profilePhoto = (CircularImageView) view.findViewById(R.id.profile_photo);
+        progressBar = (ProgressBar) view.findViewById(R.id.profileProgressBar);
+        gridView = (GridView) view.findViewById(R.id.gridView);
+        toolbar = (Toolbar) view.findViewById(R.id.profileToolBar);
+        profileMenu = (ImageView) view.findViewById(R.id.profileMenu);
+        bottomNavigationViewEx = (BottomNavigationViewEx) view.findViewById(R.id.bottomNavViewBar);
         context = getActivity();
+        firebaseMethods = new FirebaseMethods(getActivity());
 
         setupBottomNavigationView();
         setupToolBar();
+        setupFirebaseAuth();
 
         return view;
+    }
+
+    private void setProfileWidgets(UserSettings userSettings) {
+        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from database: " + userSettings.toString());
+        //User user = userSettings.getUser();
+        UserAccountSettings userAccountSettings = userSettings.getUserAccountSettings();
+        UniversalImageLoader.setImage(userAccountSettings.getProfile_photo(), profilePhoto, null, "");
+        tDisplayName.setText(userAccountSettings.getDisplay_name());
+        tUsername.setText(userAccountSettings.getUsername());
+        tWebsite.setText(userAccountSettings.getWebsite());
+        tDescription.setText(userAccountSettings.getDescription());
+        tPosts.setText(String.valueOf(userAccountSettings.getPosts()));
+        tFollowers.setText(String.valueOf(userAccountSettings.getFollowers()));
+        tFollowing.setText(String.valueOf(userAccountSettings.getFollowing()));
+        progressBar.setVisibility(View.GONE);
+
     }
 
     private void setupToolBar() {
@@ -102,8 +134,8 @@ public class ProfileFragment extends Fragment {
     private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
         auth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
 
@@ -117,7 +149,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Retrieve user information from the database
-
+                setProfileWidgets(firebaseMethods.getUserAccountSettings(snapshot));
                 // Retrieve images for the user in question
             }
 

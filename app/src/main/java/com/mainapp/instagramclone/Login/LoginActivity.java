@@ -26,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
 
-    private Context context;
     private ProgressBar progressBar;
     private EditText editEmail, editPassword;
     private TextView authInfo;
@@ -35,11 +34,10 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        progressBar = findViewById(R.id.progressbar);
-        authInfo = findViewById(R.id.pleaseWait);
-        editEmail = findViewById(R.id.input_email);
-        editPassword = findViewById(R.id.input_password);
-        context = LoginActivity.this;
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        authInfo = (TextView) findViewById(R.id.pleaseWait);
+        editEmail = (EditText) findViewById(R.id.input_email);
+        editPassword = (EditText) findViewById(R.id.input_password);
         Log.d(TAG, "onCreate: started.");
 
         authInfo.setVisibility(View.GONE);
@@ -65,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             String password = editPassword.getText().toString();
 
             if (isStringNull(email) || isStringNull(password))
-                Toast.makeText(context, "You must fill out all the fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "You must fill out all the fields", Toast.LENGTH_SHORT).show();
             else {
                 progressBar.setVisibility(View.VISIBLE);
                 authInfo.setVisibility(View.VISIBLE);
@@ -86,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                     startActivity(intent);
                                 } else {
-                                    Toast.makeText(context, "Email is not verified.\nCheck your email inbox.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Email is not verified.\nCheck your email inbox.", Toast.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.GONE);
                                     authInfo.setVisibility(View.GONE);
                                     auth.signOut();
