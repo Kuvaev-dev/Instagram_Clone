@@ -1,6 +1,7 @@
 package com.mainapp.instagramclone.Profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -44,6 +45,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         setupSettingsList();
         setupBottomNavigationView();
         setupFragments();
+        getIncomingIntent();
 
         ImageView backArrow = (ImageView) findViewById(R.id.backArrow);
         backArrow.setOnClickListener(view -> {
@@ -52,9 +54,17 @@ public class AccountSettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void getIncomingIntent() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(getString(R.string.calling_activity))) {
+            Log.d(TAG, "getIncomingIntent: received incoming intent " + getString(R.string.profile_activity));
+            setupViewPager(sectionStatePagerAdapter.getFragmentNumber(getString(R.string.edit_profile_fragment)));
+        }
+    }
+
     private void setupFragments() {
         sectionStatePagerAdapter = new SectionStatePagerAdapter(getSupportFragmentManager());
-        sectionStatePagerAdapter.addFragment(new EditProfileFragment(), getString(R.string.edit_profile));
+        sectionStatePagerAdapter.addFragment(new EditProfileFragment(), getString(R.string.edit_profile_fragment));
         sectionStatePagerAdapter.addFragment(new SignOutFragment(), getString(R.string.sign_out));
     }
 
@@ -70,7 +80,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.lvAccountSettings);
 
         ArrayList<String> options = new ArrayList<>();
-        options.add(getString(R.string.edit_profile));
+        options.add(getString(R.string.edit_profile_fragment));
         options.add(getString(R.string.sign_out));
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, options);

@@ -27,8 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-import com.mainapp.instagramclone.Login.LoginActivity;
-import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
 import com.mainapp.instagramclone.R;
@@ -54,7 +52,6 @@ public class ProfileFragment extends Fragment {
     private TextView tFollowing;
     private CircularImageView profilePhoto;
     private ProgressBar progressBar;
-    private GridView gridView;
 
     // Firebase
     private FirebaseAuth auth;
@@ -74,7 +71,7 @@ public class ProfileFragment extends Fragment {
         tFollowing = (TextView) view.findViewById(R.id.tvFollowing);
         profilePhoto = (CircularImageView) view.findViewById(R.id.profile_photo);
         progressBar = (ProgressBar) view.findViewById(R.id.profileProgressBar);
-        gridView = (GridView) view.findViewById(R.id.gridView);
+        GridView gridView = (GridView) view.findViewById(R.id.gridView);
         toolbar = (Toolbar) view.findViewById(R.id.profileToolBar);
         profileMenu = (ImageView) view.findViewById(R.id.profileMenu);
         bottomNavigationViewEx = (BottomNavigationViewEx) view.findViewById(R.id.bottomNavViewBar);
@@ -84,6 +81,14 @@ public class ProfileFragment extends Fragment {
         setupBottomNavigationView();
         setupToolBar();
         setupFirebaseAuth();
+
+        TextView editProfile = (TextView) view.findViewById(R.id.textEditProfile);
+        editProfile.setOnClickListener(view1 -> {
+            Log.d(TAG, "onCreateView: navigating to " + context.getString(R.string.edit_profile_fragment));
+            Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+            intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
+            startActivity(intent);
+        });
 
         return view;
     }
