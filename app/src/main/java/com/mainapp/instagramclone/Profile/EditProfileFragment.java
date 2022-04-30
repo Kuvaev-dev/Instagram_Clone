@@ -14,8 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +38,7 @@ import com.microprogramer.library.CircularImageView;
 
 import java.util.Objects;
 
-public class EditProfileFragment extends Fragment {
+public class EditProfileFragment extends Fragment implements ConfirmPasswordDialog.onConfirmPasswordListener {
     private static final String TAG = "EditProfileFragment";
 
     private EditText editDisplayName, editUsername, editWebsite, editDescription, editEmail, editPhoneNumber;
@@ -45,7 +50,43 @@ public class EditProfileFragment extends Fragment {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseMethods firebaseMethods;
-    private DatabaseReference databaseReference;
+
+    @Override
+    public void onConfirmPassword(String password) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        AuthCredential credential = EmailAuthProvider.getCredential(
+                Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()), password);
+
+        auth.getCurrentUser().reauthenticate(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "onComplete: user re-authenticated.");
+                        auth.fetchSignInMethodsForEmail(editEmail.getText().toString()).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                try {
+                                    if (Objects.requireNonNull(task1.getResult().getSignInMethods()).size() == 1) {
+                                        Log.d(TAG, "onConfirmPassword: that's email already in use.");
+                                        Toast.makeText(getActivity(), "That email is already in use", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Log.d(TAG, "onConfirmPassword: that's email is available.");
+                                        auth.getCurrentUser().updateEmail(editEmail.getText().toString()).addOnCompleteListener(task2 -> {
+                                            if (task2.isSuccessful()) {
+                                                Log.d(TAG, "onConfirmPassword: user email address updated.");
+                                                Toast.makeText(getActivity(), "Email updated", Toast.LENGTH_SHORT).show();
+                                                firebaseMethods.updateEmail(editEmail.getText().toString());
+                                            }
+                                        });
+                                    }
+                                } catch (NullPointerException exception) {
+                                    Log.d(TAG, "onConfirmPassword: NullPointerException: " + exception.getMessage());
+                                }
+                            }
+                        });
+                    }
+                    else
+                        Log.d(TAG, "onConfirmPassword: user re-authentication failed.");
+                });
+    }
 
     @Nullable
     @Override
@@ -95,7 +136,7 @@ public class EditProfileFragment extends Fragment {
 
         // If the user made a change to their email
         if (!mUserSettings.getUser().getEmail().equals(email)) {
-            // 1. Re authenticate
+            // 1. Re-authenticate
             //                  - confirm the password and email
             ConfirmPasswordDialog confirmPasswordDialog = new ConfirmPasswordDialog();
             assert getFragmentManager() != null;
@@ -165,7 +206,7 @@ public class EditProfileFragment extends Fragment {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
         auth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();
         String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();

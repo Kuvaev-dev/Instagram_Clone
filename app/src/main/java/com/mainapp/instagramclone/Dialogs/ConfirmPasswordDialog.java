@@ -20,12 +20,12 @@ import java.util.Objects;
 public class ConfirmPasswordDialog extends DialogFragment {
     private static final String TAG = "ConfirmPasswordDialog";
 
-    public interface OnConfirmPasswordListener {
+    public interface onConfirmPasswordListener {
         public void onConfirmPassword(String password);
     }
 
     TextView mPassword;
-    OnConfirmPasswordListener onConfirmPasswordListener;
+    onConfirmPasswordListener onConfirmPasswordListener;
 
     @Nullable
     @Override
@@ -61,7 +61,7 @@ public class ConfirmPasswordDialog extends DialogFragment {
         super.onAttach(context);
 
         try {
-            onConfirmPasswordListener = (OnConfirmPasswordListener) getTargetFragment();
+            onConfirmPasswordListener = (onConfirmPasswordListener) getTargetFragment();
         } catch (ClassCastException exception) {
             Log.d(TAG, "onAttach: ClassCastException: " + exception.getMessage());
         }
