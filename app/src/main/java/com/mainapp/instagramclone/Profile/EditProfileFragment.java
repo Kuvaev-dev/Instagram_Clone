@@ -98,7 +98,9 @@ public class EditProfileFragment extends Fragment {
             // 1. Re authenticate
             //                  - confirm the password and email
             ConfirmPasswordDialog confirmPasswordDialog = new ConfirmPasswordDialog();
-            confirmPasswordDialog.show(getChildFragmentManager(), getString(R.string.confirm_password_dialog));
+            assert getFragmentManager() != null;
+            confirmPasswordDialog.show(getFragmentManager(), getString(R.string.confirm_password_dialog));
+            confirmPasswordDialog.setTargetFragment(EditProfileFragment.this, 1);
 
             // 2. Check if the email already registered
             //                  - fetchProvidersForEmail(String email)
