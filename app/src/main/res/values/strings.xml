@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">InstagramClone</string>
 
+    <!-- Components -->
     <string name="edit_profile_fragment">Edit Profile</string>
     <string name="sign_out">Sign Out</string>
     <string name="profile_fragment">Profile</string>
     <string name="calling_activity">calling_activity</string>
     <string name="profile_activity">Profile Activity</string>
+    <string name="confirm_password_dialog">ConfirmPasswordDialog</string>
 
     <!-- Firebase db fields -->
     <string name="dbname_users">users</string>

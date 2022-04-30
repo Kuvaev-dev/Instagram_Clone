@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.mainapp.instagramclone.Dialogs.ConfirmPasswordDialog;
 import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
@@ -87,22 +88,23 @@ public class EditProfileFragment extends Fragment {
         final String email = editEmail.getText().toString();
         final long phoneNumber = Long.parseLong(editPhoneNumber.getText().toString());
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+        // If the user made a change to their username
+        if (!mUserSettings.getUser().getUsername().equals(username)) {
+            checkIfUsernameExists(username);
+        }
 
-                if (!mUserSettings.getUser().getUsername().equals(username)) {
-                    checkIfUsernameExists(username);
-                } else {
+        // If the user made a change to their email
+        if (!mUserSettings.getUser().getEmail().equals(email)) {
+            // 1. Re authenticate
+            //                  - confirm the password and email
+            ConfirmPasswordDialog confirmPasswordDialog = new ConfirmPasswordDialog();
+            confirmPasswordDialog.show(getChildFragmentManager(), getString(R.string.confirm_password_dialog));
 
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+            // 2. Check if the email already registered
+            //                  - fetchProvidersForEmail(String email)
+            // 3. Change the email
+            //                  - submit the new email to the database and authentication
+        }
     }
 
     private void checkIfUsernameExists(final String username) {
