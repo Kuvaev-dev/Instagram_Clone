@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
@@ -35,7 +37,8 @@ public class EditProfileFragment extends Fragment {
 
     private EditText editDisplayName, editUsername, editWebsite, editDescription, editEmail, editPhoneNumber;
     private CircularImageView profilePhoto;
-    private String userId;
+
+    private UserSettings mUserSettings;
 
     // Firebase
     private FirebaseAuth auth;
@@ -66,6 +69,13 @@ public class EditProfileFragment extends Fragment {
             Log.d(TAG, "onClick: navigating back to ProfileActivity");
             getActivity().finish();
         });
+
+        ImageView checkmark = (ImageView) view.findViewById(R.id.saveChanges);
+        checkmark.setOnClickListener(view12 -> {
+            Log.d(TAG, "onCreateView: attempting to save changes.");
+            saveProfileSettings();
+        });
+
         return view;
     }
 
@@ -80,16 +90,9 @@ public class EditProfileFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = new User();
-                for (DataSnapshot ds: snapshot.child(getString(R.string.dbname_users)).getChildren()) {
-                    if (Objects.equals(ds.getKey(), userId)) {
-                        user.setUsername(Objects.requireNonNull(ds.getValue(User.class)).getUsername());
-                    }
-                }
-                Log.d(TAG, "onDataChange: CURRENT USERNAME: " + user.getUsername());
 
-                if (user.getUsername().equals(username)) {
-
+                if (!mUserSettings.getUser().getUsername().equals(username)) {
+                    checkIfUsernameExists(username);
                 } else {
 
                 }
@@ -102,8 +105,43 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
+    private void checkIfUsernameExists(final String username) {
+        Log.d(TAG, "checkIfUsernameExists: checking if " + username + " already exists.");
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseReference
+                .child(getString(R.string.dbname_users))
+                .orderByChild(getString(R.string.field_username))
+                .equalTo(username);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Add the username
+                    firebaseMethods.updateUsername(username);
+                    Toast.makeText(getActivity(), "Saved username.", Toast.LENGTH_SHORT).show();
+                }
+
+                for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                    if (singleSnapshot.exists()) {
+                        Log.d(TAG, "onDataChange: FOUND A MATCH: " + Objects.requireNonNull(singleSnapshot.getValue(User.class)).getUsername());
+                        Toast.makeText(getActivity(), "The username already exists.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void setProfileWidgets(UserSettings userSettings) {
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from database: " + userSettings.toString());
+
+        mUserSettings = userSettings;
         UserAccountSettings userAccountSettings = userSettings.getUserAccountSettings();
         UniversalImageLoader.setImage(userAccountSettings.getProfile_photo(), profilePhoto, null, "");
         editDisplayName.setText(userAccountSettings.getDisplay_name());
@@ -124,7 +162,7 @@ public class EditProfileFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
-        userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+        String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
 
