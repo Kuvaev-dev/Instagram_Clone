@@ -39,15 +39,15 @@ public class AccountSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_settings);
         context = AccountSettingsActivity.this;
         Log.d(TAG, "onCreate: started.");
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mRelativeLayout = (RelativeLayout) findViewById(R.id.relLayout1);
+        mViewPager = findViewById(R.id.container);
+        mRelativeLayout = findViewById(R.id.relLayout1);
 
         setupSettingsList();
         setupBottomNavigationView();
         setupFragments();
         getIncomingIntent();
 
-        ImageView backArrow = (ImageView) findViewById(R.id.backArrow);
+        ImageView backArrow = findViewById(R.id.backArrow);
         backArrow.setOnClickListener(view -> {
             Log.d(TAG, "onClick: navigating to 'ProfileActivity'");
             finish();

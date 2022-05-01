@@ -85,12 +85,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void initWidgets() {
         Log.d(TAG, "initWidgets: initializing widgets.");
-        editEmail = (EditText) findViewById(R.id.input_email);
-        editUsername = (EditText) findViewById(R.id.input_username);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
-        authInfo = (TextView) findViewById(R.id.pleaseWait);
-        editPassword = (EditText) findViewById(R.id.input_password);
-        regBtn = (Button) findViewById(R.id.btn_register);
+        editEmail = findViewById(R.id.input_email);
+        editUsername = findViewById(R.id.input_username);
+        progressBar = findViewById(R.id.progressbar);
+        authInfo = findViewById(R.id.pleaseWait);
+        editPassword = findViewById(R.id.input_password);
+        regBtn = findViewById(R.id.btn_register);
         context = RegisterActivity.this;
         progressBar.setVisibility(View.GONE);
         authInfo.setVisibility(View.GONE);

@@ -21,7 +21,7 @@ public class ConfirmPasswordDialog extends DialogFragment {
     private static final String TAG = "ConfirmPasswordDialog";
 
     public interface onConfirmPasswordListener {
-        public void onConfirmPassword(String password);
+        void onConfirmPassword(String password);
     }
 
     TextView mPassword;
@@ -31,11 +31,11 @@ public class ConfirmPasswordDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_confirm_password, container, false);
-        mPassword = (TextView) view.findViewById(R.id.confirm_password);
+        mPassword = view.findViewById(R.id.confirm_password);
 
         Log.d(TAG, "onCreateView: started.");
 
-        TextView confirmDialog = (TextView) view.findViewById(R.id.dialogConfirm);
+        TextView confirmDialog = view.findViewById(R.id.dialogConfirm);
         confirmDialog.setOnClickListener(view1 -> {
             Log.d(TAG, "onCreateView: captured password and confirming.");
             String password = mPassword.getText().toString();
@@ -47,7 +47,7 @@ public class ConfirmPasswordDialog extends DialogFragment {
                 Toast.makeText(getActivity(), "You must enter a password", Toast.LENGTH_SHORT).show();
         });
 
-        TextView cancelDialog = (TextView) view.findViewById(R.id.dialogCancel);
+        TextView cancelDialog = view.findViewById(R.id.dialogCancel);
         cancelDialog.setOnClickListener(view1 -> {
             Log.d(TAG, "onCreateView: closing the dialog.");
             Objects.requireNonNull(getDialog()).dismiss();

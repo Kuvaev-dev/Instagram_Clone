@@ -62,19 +62,19 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        tDisplayName = (TextView) view.findViewById(R.id.display_name);
-        tUsername = (TextView) view.findViewById(R.id.username);
-        tWebsite = (TextView) view.findViewById(R.id.website);
-        tDescription = (TextView) view.findViewById(R.id.description);
-        tPosts = (TextView) view.findViewById(R.id.tvPosts);
-        tFollowers = (TextView) view.findViewById(R.id.tvFollowers);
-        tFollowing = (TextView) view.findViewById(R.id.tvFollowing);
-        profilePhoto = (CircularImageView) view.findViewById(R.id.profile_photo);
-        progressBar = (ProgressBar) view.findViewById(R.id.profileProgressBar);
-        GridView gridView = (GridView) view.findViewById(R.id.gridView);
-        toolbar = (Toolbar) view.findViewById(R.id.profileToolBar);
-        profileMenu = (ImageView) view.findViewById(R.id.profileMenu);
-        bottomNavigationViewEx = (BottomNavigationViewEx) view.findViewById(R.id.bottomNavViewBar);
+        tDisplayName = view.findViewById(R.id.display_name);
+        tUsername = view.findViewById(R.id.username);
+        tWebsite = view.findViewById(R.id.website);
+        tDescription = view.findViewById(R.id.description);
+        tPosts = view.findViewById(R.id.tvPosts);
+        tFollowers = view.findViewById(R.id.tvFollowers);
+        tFollowing = view.findViewById(R.id.tvFollowing);
+        profilePhoto = view.findViewById(R.id.profile_photo);
+        progressBar = view.findViewById(R.id.profileProgressBar);
+        GridView gridView = view.findViewById(R.id.gridView);
+        toolbar = view.findViewById(R.id.profileToolBar);
+        profileMenu = view.findViewById(R.id.profileMenu);
+        bottomNavigationViewEx = view.findViewById(R.id.bottomNavViewBar);
         context = getActivity();
         firebaseMethods = new FirebaseMethods(getActivity());
 
@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
         setupToolBar();
         setupFirebaseAuth();
 
-        TextView editProfile = (TextView) view.findViewById(R.id.textEditProfile);
+        TextView editProfile = view.findViewById(R.id.textEditProfile);
         editProfile.setOnClickListener(view1 -> {
             Log.d(TAG, "onCreateView: navigating to " + context.getString(R.string.edit_profile_fragment));
             Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);

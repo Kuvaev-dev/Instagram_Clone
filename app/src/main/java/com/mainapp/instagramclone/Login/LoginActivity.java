@@ -33,10 +33,10 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
-        authInfo = (TextView) findViewById(R.id.pleaseWait);
-        editEmail = (EditText) findViewById(R.id.input_email);
-        editPassword = (EditText) findViewById(R.id.input_password);
+        progressBar = findViewById(R.id.progressbar);
+        authInfo = findViewById(R.id.pleaseWait);
+        editEmail = findViewById(R.id.input_email);
+        editPassword = findViewById(R.id.input_password);
         Log.d(TAG, "onCreate: started.");
 
         authInfo.setVisibility(View.GONE);

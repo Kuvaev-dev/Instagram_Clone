@@ -14,13 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -92,27 +89,27 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) throws NullPointerException {
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
-        profilePhoto = (CircularImageView) view.findViewById(R.id.profile_photo);
-        editDisplayName = (EditText) view.findViewById(R.id.display_name);
-        editUsername = (EditText) view.findViewById(R.id.username);
-        editWebsite = (EditText) view.findViewById(R.id.website);
-        editDescription = (EditText) view.findViewById(R.id.description);
-        editEmail = (EditText) view.findViewById(R.id.email);
-        editPhoneNumber = (EditText) view.findViewById(R.id.phoneNumber);
-        TextView changeProfilePhoto = (TextView) view.findViewById(R.id.changeProfilePhoto);
+        profilePhoto = view.findViewById(R.id.profile_photo);
+        editDisplayName = view.findViewById(R.id.display_name);
+        editUsername = view.findViewById(R.id.username);
+        editWebsite = view.findViewById(R.id.website);
+        editDescription = view.findViewById(R.id.description);
+        editEmail = view.findViewById(R.id.email);
+        editPhoneNumber = view.findViewById(R.id.phoneNumber);
+        TextView changeProfilePhoto = view.findViewById(R.id.changeProfilePhoto);
         firebaseMethods = new FirebaseMethods(getActivity());
 
         // setProfileImage();
         setupFirebaseAuth();
 
         // Navigating arrow to ProfileActivity
-        ImageView backArrow = (ImageView) view.findViewById(R.id.backArrow);
+        ImageView backArrow = view.findViewById(R.id.backArrow);
         backArrow.setOnClickListener(view1 -> {
             Log.d(TAG, "onClick: navigating back to ProfileActivity");
             getActivity().finish();
         });
 
-        ImageView checkmark = (ImageView) view.findViewById(R.id.saveChanges);
+        ImageView checkmark = view.findViewById(R.id.saveChanges);
         checkmark.setOnClickListener(view12 -> {
             Log.d(TAG, "onCreateView: attempting to save changes.");
             saveProfileSettings();
