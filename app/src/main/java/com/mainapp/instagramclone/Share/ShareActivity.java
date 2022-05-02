@@ -40,6 +40,10 @@ public class ShareActivity extends AppCompatActivity {
         }
     }
 
+    public int getCurrentTabNumber() {
+        return viewPager.getCurrentItem();
+    }
+
     private void setupViewPager() {
         SectionPagerAdapter sectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
         sectionPagerAdapter.addFragment(new GalleryFragment());
