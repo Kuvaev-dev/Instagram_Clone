@@ -9,32 +9,53 @@ import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 import com.mainapp.instagramclone.Utils.Permissions;
+import com.mainapp.instagramclone.Utils.SectionPagerAdapter;
+
+import java.util.Objects;
 
 public class ShareActivity extends AppCompatActivity {
     private static final String TAG = "ShareActivity";
     private static final int ACTIVITY_NUM = 2;
     private static final int VERIFY_PERMISSIONS_REQUEST = 1;
 
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_share);
         Log.d(TAG, "onCreate: started.");
 
         if (checkPermissionsArray(Permissions.PERMISSIONS)) {
-
+            setupViewPager();
         } else {
             verifyPermissions(Permissions.PERMISSIONS);
         }
-
-        //setupBottomNavigationView();
     }
 
+    private void setupViewPager() {
+        SectionPagerAdapter sectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
+        //sectionPagerAdapter.addFragment(new GalleryFragment());
+        //sectionPagerAdapter.addFragment(new PhotoFragment());
+//        viewPager = findViewById(R.id.container);
+//        viewPager.setAdapter(sectionPagerAdapter);
+//
+//        TabLayout tabLayout = findViewById(R.id.tabsBottom);
+//        tabLayout.setupWithViewPager(viewPager);
+//        Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getString(R.string.gallery));
+//        Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getString(R.string.photo));
+    }
+
+    /*
+     *  Verify all the permissions
+     */
     public void verifyPermissions(String[] permissions) {
         Log.d(TAG, "verifyPermissions: verifying permissions.");
         ActivityCompat.requestPermissions(ShareActivity.this, permissions, VERIFY_PERMISSIONS_REQUEST);

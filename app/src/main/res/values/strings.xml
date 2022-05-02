@@ -1,4 +1,5 @@
 <resources>
+    <!-- App -->
     <string name="app_name">InstagramClone</string>
 
     <!-- Components -->
@@ -18,4 +19,8 @@
     <string name="field_phone_number">phone_number</string>
     <string name="field_description">description</string>
     <string name="field_website">website</string>
+
+    <!-- Strings -->
+    <string name="gallery">GALLERY</string>
+    <string name="photo">PHOTO</string>
 </resources>
