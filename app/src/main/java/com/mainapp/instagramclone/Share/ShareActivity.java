@@ -42,15 +42,15 @@ public class ShareActivity extends AppCompatActivity {
 
     private void setupViewPager() {
         SectionPagerAdapter sectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
-        //sectionPagerAdapter.addFragment(new GalleryFragment());
-        //sectionPagerAdapter.addFragment(new PhotoFragment());
-//        viewPager = findViewById(R.id.container);
-//        viewPager.setAdapter(sectionPagerAdapter);
-//
-//        TabLayout tabLayout = findViewById(R.id.tabsBottom);
-//        tabLayout.setupWithViewPager(viewPager);
-//        Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getString(R.string.gallery));
-//        Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getString(R.string.photo));
+        sectionPagerAdapter.addFragment(new GalleryFragment());
+        sectionPagerAdapter.addFragment(new PhotoFragment());
+        viewPager = findViewById(R.id.container);
+        viewPager.setAdapter(sectionPagerAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.tabsBottom);
+        tabLayout.setupWithViewPager(viewPager);
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getString(R.string.gallery));
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getString(R.string.photo));
     }
 
     /*
