@@ -145,6 +145,19 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
             // 3. Change the email
             //                  - submit the new email to the database and authentication
         }
+
+        // Check if setting is not equals db data and update user_account_settings
+        if (!mUserSettings.getUserAccountSettings().getDisplay_name().equals(displayName))
+            firebaseMethods.updateUserAccountSettings(displayName, null, null, 0);
+
+        if (!mUserSettings.getUserAccountSettings().getWebsite().equals(website))
+            firebaseMethods.updateUserAccountSettings(null, website, null, 0);
+
+        if (!mUserSettings.getUserAccountSettings().getDescription().equals(description))
+            firebaseMethods.updateUserAccountSettings(displayName, null, description, 0);
+
+        if (mUserSettings.getUserAccountSettings().getPhone_number() != phoneNumber)
+            firebaseMethods.updateUserAccountSettings(displayName, null, null, phoneNumber);
     }
 
     private void checkIfUsernameExists(final String username) {

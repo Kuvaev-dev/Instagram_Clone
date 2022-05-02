@@ -8,6 +8,7 @@ public class UserAccountSettings {
     private long followers;
     private long following;
     private long posts;
+    private long phone_number;
     private String profile_photo;
     private String username;
     private String website;
@@ -90,6 +91,14 @@ public class UserAccountSettings {
         this.website = website;
     }
 
+    public long getPhone_number() {
+        return phone_number;
+    }
+
+    public void setPhone_number(long phone_number) {
+        this.phone_number = phone_number;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -102,6 +111,7 @@ public class UserAccountSettings {
                 ", profile_photo='" + profile_photo + '\'' +
                 ", username='" + username + '\'' +
                 ", website='" + website + '\'' +
+                ", phone_number='" + phone_number + '\'' +
                 '}';
     }
 }
