@@ -29,7 +29,7 @@ public class LikesActivity extends AppCompatActivity {
      * Bottom Navigation View Setup
      */
     private void setupBottomNavigationView() {
-        Log.d(TAG, "SetUpBottomNavigationView: setting up BottomNavigationView");
+        Log.d(TAG, "SetUpBottomNavigationView: setting up BottomNavigationView.");
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(LikesActivity.this, bottomNavigationViewEx);

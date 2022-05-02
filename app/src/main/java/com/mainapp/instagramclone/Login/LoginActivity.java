@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         // Init the button for login
         Button btnLogin = findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(view -> {
-            Log.d(TAG, "onClick: attempting to login");
+            Log.d(TAG, "onClick: attempting to login.");
             String email = editEmail.getText().toString();
             String password = editPassword.getText().toString();
 
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView linkSignUp = findViewById(R.id.link_signup);
         linkSignUp.setOnClickListener(view -> {
-            Log.d(TAG, "onClick: navigating to register string");
+            Log.d(TAG, "onClick: navigating to register string.");
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
