@@ -1,5 +1,6 @@
 package com.mainapp.instagramclone.Share;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,11 +21,16 @@ import androidx.fragment.app.Fragment;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.FilePaths;
 import com.mainapp.instagramclone.Utils.FileSearch;
+import com.mainapp.instagramclone.Utils.GridImageAdapter;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 
 public class GalleryFragment extends Fragment {
     private static final String TAG = "GalleryFragment";
+    private static final int NUM_GRID_COLUMNS = 3;
 
     private GridView gridView;
     private ImageView galleryImage;
@@ -32,6 +38,7 @@ public class GalleryFragment extends Fragment {
     private Spinner directorySpinner;
 
     private ArrayList<String> directories;
+    private String mAppend = "file:/";
 
     @Nullable
     @Override
@@ -78,11 +85,57 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d(TAG, "onItemSelected: selected: " + directories.get(position));
+                setupGridView(directories.get(position));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+    }
+
+    private void setupGridView(String selectedDirectory) {
+        Log.d(TAG, "setupGridView: directory chosen: " + selectedDirectory);
+        final ArrayList<String> imgURLs = FileSearch.getFilePaths(selectedDirectory);
+
+        int gridWidth = getResources().getDisplayMetrics().widthPixels;
+        int imageWidth = gridWidth / NUM_GRID_COLUMNS;
+        gridView.setColumnWidth(imageWidth);
+
+        GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, mAppend, imgURLs);
+        gridView.setAdapter(adapter);
+
+        setImage(imgURLs.get(0), galleryImage, mAppend);
+
+        gridView.setOnItemClickListener((adapterView, view, position, id) -> {
+            Log.d(TAG, "setupGridView: selected image: " + imgURLs.get(position));
+            setImage(imgURLs.get(position), galleryImage, mAppend);
+        });
+    }
+
+    private void setImage(String imgURL, ImageView image, String append) {
+        Log.d(TAG, "setImageURL: setting image.");
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(append + imgURL, image, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
