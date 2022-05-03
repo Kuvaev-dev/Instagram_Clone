@@ -24,4 +24,5 @@
     <string name="gallery">GALLERY</string>
     <string name="photo">PHOTO</string>
     <string name="fr_photo_string_open_camera">Open Camera</string>
+    <string name="selected_image">selected_image</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.mainapp.instagramclone.Share;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -38,7 +40,8 @@ public class GalleryFragment extends Fragment {
     private Spinner directorySpinner;
 
     private ArrayList<String> directories;
-    private String mAppend = "file:/";
+    private final String mAppend = "file:/";
+    private String selectedImage;
 
     @Nullable
     @Override
@@ -61,7 +64,9 @@ public class GalleryFragment extends Fragment {
         TextView nextScreen = view.findViewById(R.id.tvNext);
         nextScreen.setOnClickListener(view2 -> {
             Log.d(TAG, "onCreateView: navigating to the final share screen.");
-
+            Intent intent = new Intent(getActivity(), NextActivity.class);
+            intent.putExtra(getString(R.string.selected_image), selectedImage);
+            startActivity(intent);
         });
 
         init();
@@ -74,10 +79,17 @@ public class GalleryFragment extends Fragment {
         // Check for other folders inside 'storage/emulated/0/pictures'
         directories = FileSearch.getDirectoryPaths(filePaths.PICTURES);
 
+        ArrayList<String> directoryNames = new ArrayList<>();
+        for (int i = 0; i < directories.size(); i++) {
+            int index = directories.get(i).lastIndexOf("/");
+            String substring = directories.get(i).substring(index).replace("/", "");
+            directoryNames.add(substring);
+        }
+
         directories.add(filePaths.CAMERA);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, directories);
+                android.R.layout.simple_spinner_item, directoryNames);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         directorySpinner.setAdapter(arrayAdapter);
 
@@ -107,10 +119,12 @@ public class GalleryFragment extends Fragment {
         gridView.setAdapter(adapter);
 
         setImage(imgURLs.get(0), galleryImage, mAppend);
+        selectedImage = imgURLs.get(0);
 
         gridView.setOnItemClickListener((adapterView, view, position, id) -> {
             Log.d(TAG, "setupGridView: selected image: " + imgURLs.get(position));
             setImage(imgURLs.get(position), galleryImage, mAppend);
+            selectedImage = imgURLs.get(position);
         });
     }
 
