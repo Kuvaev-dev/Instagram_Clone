@@ -13,7 +13,7 @@
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_account_settings.xml" value="0.1586147926464301" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_home.xml" value="0.17916666666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_login.xml" value="0.25" />
-        <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_next.xml" value="0.1586147926464301" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_next.xml" value="0.22" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_profile.xml" value="0.2" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/activity_share.xml" value="0.1586147926464301" />
@@ -39,6 +39,7 @@
         <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_accountsettingstoolbar.xml" value="0.1586147926464301" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_editprofile_toolbar.xml" value="0.18" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_gallery_toolbar.xml" value="0.2" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_next_toolbar.xml" value="0.1586147926464301" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_profile.xml" value="0.47717842323651455" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_profilebar.xml" value="0.225669099756691" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/white_grey_border_bottom.xml" value="0.19322916666666667" />

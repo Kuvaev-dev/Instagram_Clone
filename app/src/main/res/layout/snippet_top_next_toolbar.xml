@@ -20,30 +20,19 @@
                     android:layout_height="30dp"
                     android:layout_marginEnd="20dp"
                     android:layout_centerVertical="true"
-                    android:id="@+id/ivCloseShare"
-                    android:src="@drawable/ic_black_x"/>
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/ivCloseShare"
-                    android:id="@+id/spinnerDirectory"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:text="Gallery"
-                    android:layout_centerVertical="true"
-                    android:gravity="center_vertical"/>
+                    android:id="@+id/ivBackArrow"
+                    android:src="@drawable/ic_backarrow"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Next"
+                    android:text="Share"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="15dp"
                     android:textSize="20sp"
                     android:textColor="@color/link_blue"
                     android:layout_centerVertical="true"
-                    android:id="@+id/tvNext"/>
+                    android:id="@+id/tvShare"/>
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
