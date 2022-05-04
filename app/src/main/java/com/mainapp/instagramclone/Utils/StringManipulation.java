@@ -27,7 +27,7 @@ public class StringManipulation {
                 }
             }
             String s = stringBuilder.toString().replace(" ", "").replace("#", ",#");
-            return s.substring(1, s.length());
+            return s.substring(1);
         }
         return string;
     }

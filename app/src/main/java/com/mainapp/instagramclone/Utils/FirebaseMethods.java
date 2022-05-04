@@ -6,10 +6,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,7 +13,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mainapp.instagramclone.Models.Photo;
@@ -62,14 +57,14 @@ public class FirebaseMethods {
         // If new photo
         if (photoType.equals(mContext.getString(R.string.new_photo))) {
             Log.d(TAG, "uploadNewPhoto: uploading new photo.");
-            String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String user_id = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
             StorageReference storageReference = mStorageReference
                     .child(filePaths.FIREBASE_IMAGE_STORAGE + "/" + user_id + "/photo" + (count + 1));
 
             // Convert image URL to bitmap
             Bitmap bitmap = ImageManager.getBitmap(imgURL);
             byte[] bytes = ImageManager.getBytesFromBitmap(bitmap, 100);
-            UploadTask uploadTask = null;
+            UploadTask uploadTask;
             uploadTask = storageReference.putBytes(bytes);
 
             uploadTask.addOnSuccessListener(taskSnapshot -> {
