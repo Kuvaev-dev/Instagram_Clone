@@ -35,6 +35,17 @@ public class FirebaseMethods {
         }
     }
 
+    public int getImageCount(DataSnapshot dataSnapshot) {
+        int count = 0;
+        for (DataSnapshot ds: dataSnapshot
+                .child(mContext.getString(R.string.dbname_user_photos))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .getChildren()) {
+            count++;
+        }
+        return count;
+    }
+
     public void updateUserAccountSettings(String display_name, String website, String description, long phone_number) {
         Log.d(TAG, "updateUserAccountSettings: updating user account settings.");
 

@@ -30,11 +30,13 @@ public class NextActivity extends AppCompatActivity {
     private FirebaseMethods firebaseMethods;
 
     private final String mAppend = "file:/";
+    private int imageCount = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
+        firebaseMethods = new FirebaseMethods(NextActivity.this);
 
         setupFirebaseAuth();
 
@@ -53,6 +55,18 @@ public class NextActivity extends AppCompatActivity {
         setImage();
     }
 
+    private void uploadPhoto() {
+        /*
+            1. Step 1 - Create a data models for photos.
+            2. Step 2 - Add properties to the photo objects: caption, date, imageURL, photo_id, tags, user_id.
+            3. Step 3 - Count the number of photos that the usr already has.
+            4. Step 4:
+                a). Upload the photo to Firebase storage.
+                b). Insert into 'photos' node.
+                c). Insert into 'user_photos' node.
+         */
+    }
+
     private void setImage() {
         Intent intent = getIntent();
         ImageView imageView = findViewById(R.id.imageShare);
@@ -69,6 +83,7 @@ public class NextActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference();
+        Log.d(TAG, "onDataChange: image count: " + imageCount);
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
 
@@ -81,7 +96,8 @@ public class NextActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                imageCount = firebaseMethods.getImageCount(snapshot);
+                Log.d(TAG, "onDataChange: image count: " + imageCount);
             }
 
             @Override
