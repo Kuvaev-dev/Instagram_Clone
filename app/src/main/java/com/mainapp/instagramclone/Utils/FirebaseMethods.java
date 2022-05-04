@@ -9,6 +9,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
@@ -19,19 +21,38 @@ import java.util.Objects;
 public class FirebaseMethods {
     private static final String TAG = "FirebaseMethods";
 
+    // Firebase
     private final FirebaseAuth auth;
     private final Context mContext;
     private final DatabaseReference databaseReference;
+    private final StorageReference mStorageReference;
     private String userId;
 
     public FirebaseMethods(Context context) {
         auth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+        mStorageReference = FirebaseStorage.getInstance().getReference();
         mContext = context;
 
         if (auth.getCurrentUser() != null) {
             userId = auth.getCurrentUser().getUid();
+        }
+    }
+
+    public void uploadNewPhoto(String photoType, String caption, int count, String imgURL) {
+        Log.d(TAG, "uploadNewPhoto: attempting to upload new photo.");
+        FilePaths filePaths = new FilePaths();
+        // If new photo
+        if (photoType.equals(mContext.getString(R.string.new_photo))) {
+            Log.d(TAG, "uploadNewPhoto: uploading new photo.");
+            String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            StorageReference storageReference = mStorageReference
+                    .child(filePaths.FIREBASE_IMAGE_STORAGE + "/" + user_id + "/photo" + (count + 1));
+        }
+        // If new profile photo
+        else if (photoType.equals(mContext.getString(R.string.profile_photo))) {
+            Log.d(TAG, "uploadNewPhoto: uploading new profile photo.");
         }
     }
 

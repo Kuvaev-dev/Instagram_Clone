@@ -3,8 +3,10 @@ package com.mainapp.instagramclone.Share;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,20 +25,22 @@ import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 
 public class NextActivity extends AppCompatActivity {
     private static final String TAG = "NextActivity";
+    private EditText mCaption;
 
     // Firebase
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseMethods firebaseMethods;
 
-    private final String mAppend = "file:/";
     private int imageCount = 0;
+    private String imgURL;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
         firebaseMethods = new FirebaseMethods(NextActivity.this);
+        mCaption = findViewById(R.id.caption);
 
         setupFirebaseAuth();
 
@@ -49,7 +53,9 @@ public class NextActivity extends AppCompatActivity {
         TextView share = findViewById(R.id.tvShare);
         share.setOnClickListener(view2 -> {
             Log.d(TAG, "onCreateView: navigating to the final share screen.");
-
+            Toast.makeText(NextActivity.this, "Attempting to upload new photo", Toast.LENGTH_SHORT).show();
+            String caption = mCaption.getText().toString();
+            firebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, imgURL);
         });
 
         setImage();
@@ -70,6 +76,7 @@ public class NextActivity extends AppCompatActivity {
     private void setImage() {
         Intent intent = getIntent();
         ImageView imageView = findViewById(R.id.imageShare);
+        String mAppend = "file:/";
         UniversalImageLoader.setImage(intent.getStringExtra(getString(R.string.selected_image)), imageView, null, mAppend);
     }
 
