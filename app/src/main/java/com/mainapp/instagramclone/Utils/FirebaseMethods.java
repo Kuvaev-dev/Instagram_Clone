@@ -20,12 +20,17 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
 import com.mainapp.instagramclone.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 public class FirebaseMethods {
     private static final String TAG = "FirebaseMethods";
@@ -71,6 +76,7 @@ public class FirebaseMethods {
                 Task<Uri> firebaseUrl = taskSnapshot.getStorage().getDownloadUrl();
                 firebaseUrl.addOnSuccessListener(uri -> {
                     Toast.makeText(mContext, "Photo upload success.", Toast.LENGTH_SHORT).show();
+                    addPhotoToDatabase(caption, uri.toString());
                 });
             }).addOnFailureListener(exception -> {
                 Toast.makeText(mContext, "Photo upload failed.", Toast.LENGTH_SHORT).show();
@@ -90,6 +96,31 @@ public class FirebaseMethods {
         else if (photoType.equals(mContext.getString(R.string.profile_photo))) {
             Log.d(TAG, "uploadNewPhoto: uploading new profile photo.");
         }
+    }
+
+    private String getTimestamp() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Uzhgorod"));
+        return simpleDateFormat.format(new Date());
+    }
+
+    private void addPhotoToDatabase(String caption, String imgURL) {
+        Log.d(TAG, "addPhotoToDatabase: adding photo to database.");
+        String tags = StringManipulation.getTags(caption);
+        String newPhotoKey = databaseReference.child(mContext.getString(R.string.dbname_photos)).push().getKey();
+        Photo photo = new Photo();
+        photo.setCaption(caption);
+        photo.setDate_created(getTimestamp());
+        photo.setImage_path(imgURL);
+        photo.setTags(tags);
+        photo.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        photo.setPhoto_id(newPhotoKey);
+
+        assert newPhotoKey != null;
+        databaseReference.child(mContext.getString(R.string.dbname_user_photos))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(newPhotoKey).setValue(photo);
+        databaseReference.child(mContext.getString(R.string.dbname_photos)).child(newPhotoKey).setValue(photo);
     }
 
     public int getImageCount(DataSnapshot dataSnapshot) {
