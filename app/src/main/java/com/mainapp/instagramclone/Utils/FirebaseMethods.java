@@ -1,6 +1,7 @@
 package com.mainapp.instagramclone.Utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
@@ -49,6 +51,12 @@ public class FirebaseMethods {
             String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
             StorageReference storageReference = mStorageReference
                     .child(filePaths.FIREBASE_IMAGE_STORAGE + "/" + user_id + "/photo" + (count + 1));
+
+            // Convert image URL to bitmap
+            Bitmap bitmap = ImageManager.getBitmap(imgURL);
+            byte[] bytes = ImageManager.getBytesFromBitmap(bitmap, 100);
+            UploadTask uploadTask = null;
+            uploadTask = storageReference.putBytes(bytes);
         }
         // If new profile photo
         else if (photoType.equals(mContext.getString(R.string.profile_photo))) {
@@ -228,7 +236,7 @@ public class FirebaseMethods {
 
                     Log.d(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + userAccountSettings);
                 } catch (NullPointerException exception) {
-                    Log.d(TAG, "getUserAccountSettings: NullPointerException: " + exception.getMessage());
+                    Log.e(TAG, "getUserAccountSettings: NullPointerException: " + exception.getMessage());
                 }
             }
 
