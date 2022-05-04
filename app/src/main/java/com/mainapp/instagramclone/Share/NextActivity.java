@@ -77,7 +77,8 @@ public class NextActivity extends AppCompatActivity {
         Intent intent = getIntent();
         ImageView imageView = findViewById(R.id.imageShare);
         String mAppend = "file:/";
-        UniversalImageLoader.setImage(intent.getStringExtra(getString(R.string.selected_image)), imageView, null, mAppend);
+        imgURL = intent.getStringExtra(getString(R.string.selected_image));
+        UniversalImageLoader.setImage(imgURL, imageView, null, mAppend);
     }
 
     // Firebase BEGINNING

@@ -2,15 +2,22 @@ package com.mainapp.instagramclone.Utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mainapp.instagramclone.Models.User;
@@ -29,6 +36,8 @@ public class FirebaseMethods {
     private final DatabaseReference databaseReference;
     private final StorageReference mStorageReference;
     private String userId;
+
+    private double photoUploadProgress = 0;
 
     public FirebaseMethods(Context context) {
         auth = FirebaseAuth.getInstance();
@@ -57,6 +66,25 @@ public class FirebaseMethods {
             byte[] bytes = ImageManager.getBytesFromBitmap(bitmap, 100);
             UploadTask uploadTask = null;
             uploadTask = storageReference.putBytes(bytes);
+
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                Task<Uri> firebaseUrl = taskSnapshot.getStorage().getDownloadUrl();
+                firebaseUrl.addOnSuccessListener(uri -> {
+                    Toast.makeText(mContext, "Photo upload success.", Toast.LENGTH_SHORT).show();
+                });
+            }).addOnFailureListener(exception -> {
+                Toast.makeText(mContext, "Photo upload failed.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "uploadNewPhoto: photo upload failed.");
+            }).addOnProgressListener(snapshot -> {
+                double progress = (100 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+
+                if (progress - 15 > photoUploadProgress) {
+                    Toast.makeText(mContext, "Photo upload progress: " + String.format("%.0f", progress) + "%", Toast.LENGTH_SHORT).show();
+                    photoUploadProgress = progress;
+                }
+
+                Log.d(TAG, "uploadNewPhoto: upload progress: " + progress + "% done.");
+            });
         }
         // If new profile photo
         else if (photoType.equals(mContext.getString(R.string.profile_photo))) {
