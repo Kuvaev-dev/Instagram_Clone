@@ -55,7 +55,7 @@ public class NextActivity extends AppCompatActivity {
             Log.d(TAG, "onCreateView: navigating to the final share screen.");
             Toast.makeText(NextActivity.this, "Attempting to upload new photo", Toast.LENGTH_SHORT).show();
             String caption = mCaption.getText().toString();
-            firebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, imgURL);
+            firebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, imgURL, null);
         });
 
         setImage();

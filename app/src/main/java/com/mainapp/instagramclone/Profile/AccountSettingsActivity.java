@@ -57,16 +57,21 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     private void getIncomingIntent() {
         Intent intent = getIntent();
-
-        // If there is an imageURL attached as an extra, than it was chosen from the gallery/photo fragment
-        if (intent.hasExtra(getString(R.string.selected_image))) {
+        if (intent.hasExtra(getString(R.string.selected_image)) ||
+            intent.hasExtra(getString(R.string.selected_bitmap))) {
+            // If there is an imageURL attached as an extra, than it was chosen from the gallery/photo fragment
             Log.d(TAG, "getIncomingIntent: new incoming image URL.");
-            if (intent.getStringExtra(getString(R.string.return_to_fragment))
-                      .equals(getString(R.string.edit_profile_fragment))) {
-                // Set the new profile image
-                FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
-                firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo), null, 0,
-                        intent.getStringExtra(getString(R.string.selected_image)));
+            if (intent.getStringExtra(getString(R.string.return_to_fragment)).equals(getString(R.string.edit_profile_fragment))) {
+                if (intent.hasExtra(getString(R.string.selected_image))) {
+                    // Set the new profile image
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
+                    firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo), null, 0,
+                            intent.getStringExtra(getString(R.string.selected_image)), null);
+                } else if (intent.hasExtra(getString(R.string.selected_bitmap))) {
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
+                    firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo), null, 0,
+                            null, intent.getParcelableExtra(getString(R.string.selected_bitmap)));
+                }
             }
         }
 
