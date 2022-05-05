@@ -30,7 +30,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM = 4;
 
     private Context context;
-    private SectionStatePagerAdapter sectionStatePagerAdapter;
+    public SectionStatePagerAdapter sectionStatePagerAdapter;
     private ViewPager mViewPager;
     private RelativeLayout mRelativeLayout;
     
@@ -82,7 +82,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         sectionStatePagerAdapter.addFragment(new SignOutFragment(), getString(R.string.sign_out));
     }
 
-    private void setupViewPager(int fragmentNumber) {
+    public void setupViewPager(int fragmentNumber) {
         mRelativeLayout.setVisibility(View.GONE);
         Log.d(TAG, "setupViewPager: navigating to fragment # " + fragmentNumber);
         mViewPager.setAdapter(sectionStatePagerAdapter);

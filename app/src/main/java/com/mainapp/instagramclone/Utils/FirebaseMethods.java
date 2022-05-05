@@ -21,6 +21,7 @@ import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
+import com.mainapp.instagramclone.Profile.AccountSettingsActivity;
 import com.mainapp.instagramclone.R;
 
 import java.text.SimpleDateFormat;
@@ -94,6 +95,12 @@ public class FirebaseMethods {
         // If new profile photo
         else if (photoType.equals(mContext.getString(R.string.profile_photo))) {
             Log.d(TAG, "uploadNewPhoto: uploading new profile photo.");
+
+            ((AccountSettingsActivity) mContext).setupViewPager(
+                    ((AccountSettingsActivity) mContext).sectionStatePagerAdapter
+                            .getFragmentNumber(mContext.getString(R.string.edit_profile_fragment))
+            );
+
             String user_id = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
             StorageReference storageReference = mStorageReference
                     .child(filePaths.FIREBASE_IMAGE_STORAGE + "/" + user_id + "/profile_photo");
