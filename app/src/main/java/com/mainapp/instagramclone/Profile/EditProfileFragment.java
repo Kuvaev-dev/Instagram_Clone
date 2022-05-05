@@ -1,5 +1,6 @@
 package com.mainapp.instagramclone.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
 import com.mainapp.instagramclone.R;
+import com.mainapp.instagramclone.Share.ShareActivity;
 import com.mainapp.instagramclone.Utils.FirebaseMethods;
 import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 import com.microprogramer.library.CircularImageView;
@@ -40,6 +42,7 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
 
     private EditText editDisplayName, editUsername, editWebsite, editDescription, editEmail, editPhoneNumber;
     private CircularImageView profilePhoto;
+    private TextView changeProfilePhoto;
 
     private UserSettings mUserSettings;
 
@@ -96,7 +99,7 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
         editDescription = view.findViewById(R.id.description);
         editEmail = view.findViewById(R.id.email);
         editPhoneNumber = view.findViewById(R.id.phoneNumber);
-        TextView changeProfilePhoto = view.findViewById(R.id.changeProfilePhoto);
+        changeProfilePhoto = view.findViewById(R.id.changeProfilePhoto);
         firebaseMethods = new FirebaseMethods(getActivity());
 
         // setProfileImage();
@@ -193,7 +196,7 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
         });
     }
 
-    private void setProfileWidgets(UserSettings userSettings) {
+    private void setupProfileWidgets(UserSettings userSettings) {
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from database: " + userSettings.toString());
 
         mUserSettings = userSettings;
@@ -205,6 +208,13 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
         editDescription.setText(userAccountSettings.getDescription());
         editEmail.setText(userSettings.getUser().getEmail());
         editPhoneNumber.setText(String.valueOf(userSettings.getUser().getPhone_number()));
+
+        changeProfilePhoto.setOnClickListener(view -> {
+            Log.d(TAG, "onClick: changing profile photo.");
+            Intent intent = new Intent(getActivity(), ShareActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
+        });
     }
 
     // Firebase BEGINNING
@@ -231,7 +241,7 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Retrieve user information from the database
-                setProfileWidgets(firebaseMethods.getUserAccountSettings(snapshot));
+                setupProfileWidgets(firebaseMethods.getUserAccountSettings(snapshot));
                 // Retrieve images for the user in question
             }
 

@@ -15,11 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.mainapp.instagramclone.Profile.AccountSettingsActivity;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.FilePaths;
 import com.mainapp.instagramclone.Utils.FileSearch;
@@ -40,7 +40,6 @@ public class GalleryFragment extends Fragment {
     private Spinner directorySpinner;
 
     private ArrayList<String> directories;
-    private final String mAppend = "file:/";
     private String selectedImage;
 
     @Nullable
@@ -64,14 +63,25 @@ public class GalleryFragment extends Fragment {
         TextView nextScreen = view.findViewById(R.id.tvNext);
         nextScreen.setOnClickListener(view2 -> {
             Log.d(TAG, "onCreateView: navigating to the final share screen.");
-            Intent intent = new Intent(getActivity(), NextActivity.class);
-            intent.putExtra(getString(R.string.selected_image), selectedImage);
-            startActivity(intent);
+            if (isRootTask()) {
+                Intent intent = new Intent(getActivity(), NextActivity.class);
+                intent.putExtra(getString(R.string.selected_image), selectedImage);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                intent.putExtra(getString(R.string.selected_image), selectedImage);
+                intent.putExtra(getString(R.string.return_to_fragment), getString(R.string.edit_profile_fragment));
+                startActivity(intent);
+            }
         });
 
         init();
 
         return view;
+    }
+
+    private boolean isRootTask() {
+        return ((ShareActivity) getActivity()).getTask() == 0;
     }
 
     private void init() {
@@ -88,7 +98,7 @@ public class GalleryFragment extends Fragment {
 
         directories.add(filePaths.CAMERA);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, directoryNames);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         directorySpinner.setAdapter(arrayAdapter);
@@ -115,23 +125,24 @@ public class GalleryFragment extends Fragment {
         int imageWidth = gridWidth / NUM_GRID_COLUMNS;
         gridView.setColumnWidth(imageWidth);
 
+        String mAppend = "file:/";
         GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, mAppend, imgURLs);
         gridView.setAdapter(adapter);
 
-        setImage(imgURLs.get(0), galleryImage, mAppend);
+        setImage(imgURLs.get(0), galleryImage);
         selectedImage = imgURLs.get(0);
 
         gridView.setOnItemClickListener((adapterView, view, position, id) -> {
             Log.d(TAG, "setupGridView: selected image: " + imgURLs.get(position));
-            setImage(imgURLs.get(position), galleryImage, mAppend);
+            setImage(imgURLs.get(position), galleryImage);
             selectedImage = imgURLs.get(position);
         });
     }
 
-    private void setImage(String imgURL, ImageView image, String append) {
+    private void setImage(String imgURL, ImageView image) {
         Log.d(TAG, "setImageURL: setting image.");
         ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(append + imgURL, image, new ImageLoadingListener() {
+        imageLoader.displayImage("file:/" + imgURL, image, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {
                 progressBar.setVisibility(View.VISIBLE);

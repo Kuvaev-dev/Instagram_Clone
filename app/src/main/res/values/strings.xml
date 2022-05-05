@@ -35,4 +35,5 @@
     <string name="photo">PHOTO</string>
     <string name="fr_photo_string_open_camera">Open Camera</string>
     <string name="selected_image">selected_image</string>
+    <string name="return_to_fragment">return_to_fragment</string>
 </resources>
