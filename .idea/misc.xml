@@ -6,7 +6,10 @@
         <entry key="..\:/InstagramClone/app/src/main/res/drawable-v24/black_border.xml" value="0.115" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable-v24/grey_border.xml" value="0.115" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/grey_border_bottom.xml" value="0.115" />
+        <entry key="..\:/InstagramClone/app/src/main/res/drawable/ic_heart_red.xml" value="0.1275" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1275" />
+        <entry key="..\:/InstagramClone/app/src/main/res/drawable/vector_heart_outline.xml" value="0.1275" />
+        <entry key="..\:/InstagramClone/app/src/main/res/drawable/vector_heart_red.xml" value="0.1275" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/white_grey_border_bottom.xml" value="0.1205" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/white_grey_border_top.xml" value="0.1205" />
         <entry key="..\:/InstagramClone/app/src/main/res/drawable/white_rounded_button.xml" value="0.1275" />
@@ -35,7 +38,7 @@
         <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_center_viewpager.xml" value="0.19322916666666667" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_grid_imageview.xml" value="0.1586147926464301" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_top_tabs.xml" value="0.19322916666666667" />
-        <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_view_post.xml" value="0.2" />
+        <entry key="..\:/InstagramClone/app/src/main/res/layout/layout_view_post.xml" value="0.22" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_center_editprofile.xml" value="0.2" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_post_toolbar.xml" value="0.17" />
         <entry key="..\:/InstagramClone/app/src/main/res/layout/snippet_top_accountsettings_toolbar.xml" value="0.1" />
