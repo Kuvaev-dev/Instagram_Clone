@@ -3,6 +3,7 @@ package com.mainapp.instagramclone.Profile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,19 +26,26 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 import com.mainapp.instagramclone.Utils.FirebaseMethods;
+import com.mainapp.instagramclone.Utils.GridImageAdapter;
 import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 import com.microprogramer.library.CircularImageView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
     private static final int ACTIVITY_NUM = 4;
+    private static final int NUM_GRID_COLUMNS = 3;
 
     private Toolbar toolbar;
     private ImageView profileMenu;
@@ -52,6 +60,7 @@ public class ProfileFragment extends Fragment {
     private TextView tFollowing;
     private CircularImageView profilePhoto;
     private ProgressBar progressBar;
+    private GridView gridView;
 
     // Firebase
     private FirebaseAuth auth;
@@ -71,7 +80,7 @@ public class ProfileFragment extends Fragment {
         tFollowing = view.findViewById(R.id.tvFollowing);
         profilePhoto = view.findViewById(R.id.profile_photo);
         progressBar = view.findViewById(R.id.profileProgressBar);
-        GridView gridView = view.findViewById(R.id.gridView);
+        gridView = view.findViewById(R.id.gridView);
         toolbar = view.findViewById(R.id.profileToolBar);
         profileMenu = view.findViewById(R.id.profileMenu);
         bottomNavigationViewEx = view.findViewById(R.id.bottomNavViewBar);
@@ -81,6 +90,7 @@ public class ProfileFragment extends Fragment {
         setupBottomNavigationView();
         setupToolBar();
         setupFirebaseAuth();
+        setupGridView();
 
         TextView editProfile = view.findViewById(R.id.textEditProfile);
         editProfile.setOnClickListener(view1 -> {
@@ -91,6 +101,42 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void setupGridView() {
+        Log.d(TAG, "setupGridView: setting up image grid.");
+        final ArrayList<Photo> photos = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseReference
+                .child(getString(R.string.dbname_user_photos))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                    photos.add(singleSnapshot.getValue(Photo.class));
+                }
+
+                // Setup image grid
+                int gridWidth = getResources().getDisplayMetrics().widthPixels;
+                int imageWidth = gridWidth / NUM_GRID_COLUMNS;
+                gridView.setColumnWidth(imageWidth);
+
+                ArrayList<String> imgURLs = new ArrayList<>();
+                for (int i = 0; i < photos.size(); i++) {
+                    imgURLs.add(photos.get(i).getImage_path());
+                }
+
+                GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview,
+                        "", imgURLs);
+                gridView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: query cancelled.");
+            }
+        });
     }
 
     private void setProfileWidgets(UserSettings userSettings) {
