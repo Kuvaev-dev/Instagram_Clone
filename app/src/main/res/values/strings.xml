@@ -6,6 +6,7 @@
     <string name="edit_profile_fragment">Edit Profile</string>
     <string name="sign_out">Sign Out</string>
     <string name="profile_fragment">Profile</string>
+    <string name="view_post_fragment">View Post</string>
 
     <!-- Activities -->
     <string name="calling_activity">calling_activity</string>
@@ -13,6 +14,9 @@
 
     <!-- Dialogs -->
     <string name="confirm_password_dialog">ConfirmPasswordDialog</string>
+
+    <!-- Bundles -->
+    <string name="activity_number">activity_number</string>
 
     <!-- Firebase db tables and fields -->
     <string name="dbname_users">users</string>

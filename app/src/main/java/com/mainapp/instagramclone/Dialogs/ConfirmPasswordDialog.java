@@ -63,7 +63,7 @@ public class ConfirmPasswordDialog extends DialogFragment {
         try {
             onConfirmPasswordListener = (onConfirmPasswordListener) getTargetFragment();
         } catch (ClassCastException exception) {
-            Log.d(TAG, "onAttach: ClassCastException: " + exception.getMessage());
+            Log.e(TAG, "onAttach: ClassCastException: " + exception.getMessage());
         }
     }
 }

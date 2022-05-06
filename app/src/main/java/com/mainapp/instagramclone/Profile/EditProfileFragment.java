@@ -78,7 +78,7 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
                                         });
                                     }
                                 } catch (NullPointerException exception) {
-                                    Log.d(TAG, "onConfirmPassword: NullPointerException: " + exception.getMessage());
+                                    Log.e(TAG, "onConfirmPassword: NullPointerException: " + exception.getMessage());
                                 }
                             }
                         });

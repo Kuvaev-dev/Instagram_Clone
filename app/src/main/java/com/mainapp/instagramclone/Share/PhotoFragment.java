@@ -69,7 +69,7 @@ public class PhotoFragment extends Fragment {
                 intent.putExtra(getString(R.string.selected_bitmap), bitmap);
                 startActivity(intent);
             } catch (NullPointerException exception) {
-                Log.d(TAG, "onActivityResult: NullPointerException: " + exception.getMessage());
+                Log.e(TAG, "onActivityResult: NullPointerException: " + exception.getMessage());
             }
         } else {
             try {
@@ -80,7 +80,7 @@ public class PhotoFragment extends Fragment {
                 startActivity(intent);
                 getActivity().finish();
             } catch (NullPointerException exception) {
-                Log.d(TAG, "onActivityResult: NullPointerException: " + exception.getMessage());
+                Log.e(TAG, "onActivityResult: NullPointerException: " + exception.getMessage());
             }
         }
     }

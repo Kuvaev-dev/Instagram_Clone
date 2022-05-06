@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -42,6 +43,13 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
+
+    public interface onGridImageSelectedListener {
+        void onGridImageSelected(Photo photo, int activity_number);
+    }
+
+    onGridImageSelectedListener mOnGridImageSelectedListener;
+
     private static final int ACTIVITY_NUM = 4;
     private static final int NUM_GRID_COLUMNS = 3;
 
@@ -102,6 +110,17 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        try {
+            mOnGridImageSelectedListener = (onGridImageSelectedListener) getActivity();
+        } catch (ClassCastException exception) {
+            Log.e(TAG, "onAttach: ClassCastException: " + exception.getMessage());
+        }
+
+        super.onAttach(context);
+    }
+
     private void setupGridView() {
         Log.d(TAG, "setupGridView: setting up image grid.");
         final ArrayList<Photo> photos = new ArrayList<>();
@@ -129,6 +148,10 @@ public class ProfileFragment extends Fragment {
                 GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview,
                         "", imgURLs);
                 gridView.setAdapter(adapter);
+
+                gridView.setOnItemClickListener((adapterView, view, position, id) -> {
+                    mOnGridImageSelectedListener.onGridImageSelected(photos.get(position), ACTIVITY_NUM);
+                });
             }
 
             @Override

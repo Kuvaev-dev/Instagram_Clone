@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                                     auth.signOut();
                                 }
                             } catch (NullPointerException exception) {
-                                Log.d(TAG, "onClick: NullPointerException: " + exception.getMessage());
+                                Log.e(TAG, "onClick: NullPointerException: " + exception.getMessage());
                             }
                         }
                         progressBar.setVisibility(View.GONE);
