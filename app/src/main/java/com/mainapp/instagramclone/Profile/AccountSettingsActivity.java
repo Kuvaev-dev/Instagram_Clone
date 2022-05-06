@@ -29,16 +29,15 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private static final String TAG = "AccountSettingsActivity";
     private static final int ACTIVITY_NUM = 4;
 
-    private Context context;
     public SectionStatePagerAdapter sectionStatePagerAdapter;
     private ViewPager mViewPager;
     private RelativeLayout mRelativeLayout;
+    private final Context context = AccountSettingsActivity.this;
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_settings);
-        context = AccountSettingsActivity.this;
         Log.d(TAG, "onCreate: started.");
         mViewPager = findViewById(R.id.container);
         mRelativeLayout = findViewById(R.id.relLayout1);
@@ -64,11 +63,11 @@ public class AccountSettingsActivity extends AppCompatActivity {
             if (intent.getStringExtra(getString(R.string.return_to_fragment)).equals(getString(R.string.edit_profile_fragment))) {
                 if (intent.hasExtra(getString(R.string.selected_image))) {
                     // Set the new profile image
-                    FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(context);
                     firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo), null, 0,
                             intent.getStringExtra(getString(R.string.selected_image)), null);
                 } else if (intent.hasExtra(getString(R.string.selected_bitmap))) {
-                    FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(context);
                     firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo), null, 0,
                             null, intent.getParcelableExtra(getString(R.string.selected_bitmap)));
                 }
@@ -118,7 +117,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         Log.d(TAG, "SetUpBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(context, bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(context, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);

@@ -1,5 +1,6 @@
 package com.mainapp.instagramclone.Likes;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,8 @@ public class LikesActivity extends AppCompatActivity {
 
     private static final int ACTIVITY_NUM = 3;
 
+    private final Context context = LikesActivity.this;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +35,7 @@ public class LikesActivity extends AppCompatActivity {
         Log.d(TAG, "SetUpBottomNavigationView: setting up BottomNavigationView.");
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(LikesActivity.this, bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(context, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);

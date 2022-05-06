@@ -3,7 +3,6 @@ package com.mainapp.instagramclone.Profile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,7 +38,6 @@ import com.mainapp.instagramclone.Utils.GridImageAdapter;
 import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 import com.microprogramer.library.CircularImageView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
@@ -98,6 +96,7 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
             intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
             startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         });
 
         return view;
@@ -162,6 +161,7 @@ public class ProfileFragment extends Fragment {
             Log.d(TAG, "onClick: navigating to account settings");
             Intent intent = new Intent(context, AccountSettingsActivity.class);
             startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         });
     }
 
@@ -171,7 +171,7 @@ public class ProfileFragment extends Fragment {
     private void setupBottomNavigationView() {
         Log.d(TAG, "SetUpBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(context, bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(context, getActivity(), bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);

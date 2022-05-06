@@ -1,5 +1,6 @@
 package com.mainapp.instagramclone.Share;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class ShareActivity extends AppCompatActivity {
     private static final int VERIFY_PERMISSIONS_REQUEST = 1;
 
     private ViewPager viewPager;
+    private final Context context = ShareActivity.this;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,7 +89,7 @@ public class ShareActivity extends AppCompatActivity {
      */
     public boolean checkPermissions(String permission) {
         Log.d(TAG, "checkPermissions: checking permission: " + permission);
-        int permissionRequest = ActivityCompat.checkSelfPermission(ShareActivity.this, permission);
+        int permissionRequest = ActivityCompat.checkSelfPermission(context, permission);
         if (permissionRequest != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "checkPermissions: permission was not granted for: " + permission);
             return false;
@@ -104,7 +106,7 @@ public class ShareActivity extends AppCompatActivity {
         Log.d(TAG, "SetUpBottomNavigationView: setting up BottomNavigationView.");
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(ShareActivity.this, bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(context, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
