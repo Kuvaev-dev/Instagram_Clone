@@ -130,8 +130,12 @@ public class GalleryFragment extends Fragment {
         GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, mAppend, imgURLs);
         gridView.setAdapter(adapter);
 
-        setImage(imgURLs.get(0), galleryImage);
-        selectedImage = imgURLs.get(0);
+        try {
+            setImage(imgURLs.get(0), galleryImage);
+            selectedImage = imgURLs.get(0);
+        } catch (ArrayIndexOutOfBoundsException exception) {
+            Log.e(TAG, "setupGridView: ArrayIndexOutOfBoundsException: " + exception.getMessage());
+        }
 
         gridView.setOnItemClickListener((adapterView, view, position, id) -> {
             Log.d(TAG, "setupGridView: selected image: " + imgURLs.get(position));
