@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -149,9 +148,7 @@ public class ProfileFragment extends Fragment {
                         "", imgURLs);
                 gridView.setAdapter(adapter);
 
-                gridView.setOnItemClickListener((adapterView, view, position, id) -> {
-                    mOnGridImageSelectedListener.onGridImageSelected(photos.get(position), ACTIVITY_NUM);
-                });
+                gridView.setOnItemClickListener((adapterView, view, position, id) -> mOnGridImageSelectedListener.onGridImageSelected(photos.get(position), ACTIVITY_NUM));
             }
 
             @Override

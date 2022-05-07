@@ -33,7 +33,7 @@ public class Photo implements Parcelable {
         tags = in.readString();
     }
 
-    public static final Creator<Photo> CREATOR = new Creator<Photo>() {
+    public static final Creator<Photo> CREATOR = new Creator<>() {
         @Override
         public Photo createFromParcel(Parcel in) {
             return new Photo(in);

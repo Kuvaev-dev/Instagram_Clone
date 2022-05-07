@@ -41,7 +41,7 @@ public class ConfirmPasswordDialog extends DialogFragment {
             String password = mPassword.getText().toString();
             if (!password.equals("")) {
                 onConfirmPasswordListener.onConfirmPassword(password);
-                getDialog().dismiss();
+                Objects.requireNonNull(getDialog()).dismiss();
             }
             else
                 Toast.makeText(getActivity(), "You must enter a password", Toast.LENGTH_SHORT).show();

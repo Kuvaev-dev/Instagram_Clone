@@ -28,13 +28,11 @@ import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 import com.mainapp.instagramclone.Utils.FirebaseMethods;
-import com.mainapp.instagramclone.Utils.GridImageAdapter;
 import com.mainapp.instagramclone.Utils.SquareImageView;
 import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -131,7 +129,7 @@ public class ViewPostFragment extends Fragment {
 
     private String getTimestampDifference() {
         Log.d(TAG, "getTimestampDifference: getting timestamp difference,");
-        String difference = "";
+        String difference;
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK);
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Uzhgorod"));

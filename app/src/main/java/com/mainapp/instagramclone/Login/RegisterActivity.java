@@ -45,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private String append = "";
+    private String mUsername = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,7 +117,6 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
 
-                String mUsername = "";
                 mUsername = username + append;
                 // Add new user to the database
                 firebaseMethods.addNewUser(email, username, "", "", "");
