@@ -21,12 +21,20 @@ import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 import com.mainapp.instagramclone.Utils.SquareImageView;
 import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class ViewPostFragment extends Fragment {
     private static final String TAG = "ViewPostFragment";
 
     private BottomNavigationViewEx bottomNavigationViewEx;
     private TextView mBackLabel, mCaption, mUsername, mTimestamp;
     private ImageView mBackArrow, mEllipses, mHeartRed, mHeartWhite, mProfileImage;
+    private Photo mPhoto;
 
     private int mActivityNum = 0;
 
@@ -52,7 +60,7 @@ public class ViewPostFragment extends Fragment {
         mProfileImage = view.findViewById(R.id.profile_photo);
 
         try {
-            Photo mPhoto = getPhotoFromBundle();
+            mPhoto = getPhotoFromBundle();
             assert mPhoto != null;
             UniversalImageLoader.setImage(mPhoto.getImage_path(), mPostImage, null, "");
             mActivityNum = getActivityNumFromBundle();
@@ -61,8 +69,40 @@ public class ViewPostFragment extends Fragment {
         }
 
         setupBottomNavigationView();
+        setupWidgets();
 
         return view;
+    }
+
+    private void setupWidgets() {
+        String timestampDiff = getTimestampDifference();
+        if (!timestampDiff.equals("0")) {
+            mTimestamp.setText(timestampDiff + " DAYS AGO");
+        } else {
+            mTimestamp.setText("TODAY");
+        }
+    }
+
+    private String getTimestampDifference() {
+        Log.d(TAG, "getTimestampDifference: getting timestamp difference,");
+        String difference = "";
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Uzhgorod"));
+        Date timestamp;
+        Date today = calendar.getTime();
+        simpleDateFormat.format(today);
+        final String photoTimestamp = mPhoto.getDate_created();
+
+        try {
+            timestamp = simpleDateFormat.parse(photoTimestamp);
+            assert timestamp != null;
+            difference = String.valueOf(Math.round(today.getTime() - timestamp.getTime()) / 1000 / 60 / 60 / 24);
+        } catch (ParseException exception) {
+            Log.e(TAG, "getTimestampDifference: ParseException: " + exception.getMessage());
+            difference = "0";
+        }
+        return difference;
     }
 
     private int getActivityNumFromBundle() {
