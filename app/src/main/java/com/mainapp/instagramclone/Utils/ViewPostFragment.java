@@ -47,6 +47,7 @@ public class ViewPostFragment extends Fragment {
     private TextView mBackLabel, mCaption, mUsername, mTimestamp;
     private ImageView mBackArrow, mEllipses, mHeartRed, mHeartWhite, mProfileImage;
     private Photo mPhoto;
+    private Heart heart;
 
     private int mActivityNum = 0;
     private String photoUrl;
@@ -77,7 +78,10 @@ public class ViewPostFragment extends Fragment {
         mTimestamp = view.findViewById(R.id.image_time_posted);
         mEllipses = view.findViewById(R.id.ivEllipses);
         mHeartRed = view.findViewById(R.id.image_heart_red);
+        mHeartRed.setVisibility(View.GONE);
+        mHeartWhite.setVisibility(View.VISIBLE);
         mHeartWhite = view.findViewById(R.id.image_heart);
+        heart = new Heart(mHeartWhite, mHeartRed);
         mProfileImage = view.findViewById(R.id.profile_photo);
 
         gestureDetector = new GestureDetector(getActivity(), new GestureListener());
@@ -116,14 +120,17 @@ public class ViewPostFragment extends Fragment {
     }
 
     public static class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        private final ViewPostFragment fragment = new ViewPostFragment();
+
         @Override
         public boolean onDown(MotionEvent e) {
-            return super.onDown(e);
+            return true;
         }
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            return super.onDoubleTap(e);
+            fragment.heart.toggleLike();
+            return true;
         }
     }
 
