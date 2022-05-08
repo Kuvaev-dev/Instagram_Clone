@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseMethods firebaseMethods;
-    private DatabaseReference databaseReference;
+    private DatabaseReference mDatabaseReference;
 
     private String append = "";
     private String mUsername = "";
@@ -112,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
                 for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
                     if (singleSnapshot.exists()) {
                         Log.d(TAG, "onDataChange: FOUND A MATCH: " + Objects.requireNonNull(singleSnapshot.getValue(User.class)).getUsername());
-                        append = Objects.requireNonNull(databaseReference.push().getKey()).substring(3, 10);
+                        append = Objects.requireNonNull(mDatabaseReference.push().getKey()).substring(3, 10);
                         Log.d(TAG, "onDataChange: username already exists. Appending random string to name " + append);
                     }
                 }
@@ -138,14 +138,14 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
         auth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
+        mDatabaseReference = firebaseDatabase.getReference();
 
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
 
             if (user != null) {
                 Log.d(TAG, "onAuthStateChanged: signed in: " + user.getUid());
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         checkIfUsernameExists(username);
