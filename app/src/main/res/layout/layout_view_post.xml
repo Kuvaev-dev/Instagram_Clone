@@ -75,7 +75,7 @@
                         android:id="@+id/image_heart"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="20dp"
-                        android:src="@drawable/vector_heart_outline"
+                        android:src="@drawable/ic_heart_white"
                         android:visibility="visible"/>
 
                     <ImageView
@@ -84,7 +84,7 @@
                         android:layout_height="39dp"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="20dp"
-                        android:src="@drawable/vector_heart_red"
+                        android:src="@drawable/ic_heart_red"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.mainapp.instagramclone.Models.Photo;
-import com.mainapp.instagramclone.Post.ViewPostFragment;
+import com.mainapp.instagramclone.Utils.ViewPostFragment;
 import com.mainapp.instagramclone.R;
 
 public class ProfileActivity extends AppCompatActivity implements ProfileFragment.onGridImageSelectedListener {

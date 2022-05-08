@@ -1,10 +1,12 @@
-package com.mainapp.instagramclone.Post;
+package com.mainapp.instagramclone.Utils;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -50,6 +52,7 @@ public class ViewPostFragment extends Fragment {
     private String photoUrl;
     private String photoUsername;
     private UserAccountSettings userAccountSettings;
+    private GestureDetector gestureDetector;
 
     // Firebase
     private FirebaseAuth auth;
@@ -77,6 +80,7 @@ public class ViewPostFragment extends Fragment {
         mHeartWhite = view.findViewById(R.id.image_heart);
         mProfileImage = view.findViewById(R.id.profile_photo);
 
+        gestureDetector = new GestureDetector(getActivity(), new GestureListener());
         try {
             mPhoto = getPhotoFromBundle();
             assert mPhoto != null;
@@ -90,8 +94,37 @@ public class ViewPostFragment extends Fragment {
         setupBottomNavigationView();
         getPhotoDetails();
         //setupWidgets();
+        testToggle();
 
         return view;
+    }
+
+    private void testToggle() {
+        mHeartRed.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return gestureDetector.onTouchEvent(motionEvent);
+            }
+        });
+
+        mHeartWhite.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return gestureDetector.onTouchEvent(motionEvent);
+            }
+        });
+    }
+
+    public static class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return super.onDown(e);
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            return super.onDoubleTap(e);
+        }
     }
 
     private void getPhotoDetails() {
