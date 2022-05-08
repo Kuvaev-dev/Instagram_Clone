@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.mainapp.instagramclone.Models.Like;
 import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
@@ -39,6 +40,10 @@ import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 import com.microprogramer.library.CircularImageView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
@@ -131,7 +136,23 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
-                    photos.add(singleSnapshot.getValue(Photo.class));
+                    Photo photo = new Photo();
+                    Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
+                    assert objectMap != null;
+                    photo.setCaption(Objects.requireNonNull(objectMap.get(getString(R.string.field_caption))).toString());
+                    photo.setTags(Objects.requireNonNull(objectMap.get(getString(R.string.field_tags))).toString());
+                    photo.setPhoto_id(Objects.requireNonNull(objectMap.get(getString(R.string.field_photo_id))).toString());
+                    photo.setDate_created(Objects.requireNonNull(objectMap.get(getString(R.string.field_date_created))).toString());
+                    photo.setImage_path(Objects.requireNonNull(objectMap.get(getString(R.string.field_image_path))).toString());
+
+                    List<Like> likeList = new ArrayList<>();
+                    for (DataSnapshot ds: singleSnapshot.child(getString(R.string.field_likes)).getChildren()) {
+                        Like like = new Like();
+                        like.setUser_id(ds.getValue(Like.class).getUser_id());
+                        likeList.add(like);
+                    }
+                    photo.setLikes(likeList);
+                    photos.add(photo);
                 }
 
                 // Setup image grid

@@ -114,8 +114,8 @@ public class ViewPostFragment extends Fragment {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query query = databaseReference
                 .child(getString(R.string.dbname_photos))
-                .orderByChild(mPhoto.getPhoto_id())
-                .equalTo(getString(R.string.field_likes));
+                .child(mPhoto.getPhoto_id())
+                .child(getString(R.string.field_likes));
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -140,17 +140,17 @@ public class ViewPostFragment extends Fragment {
                             likedByCurrentUser = mUsers.toString().contains(userAccountSettings.getUsername());
                             int length = splitUsers.length;
                             if (length == 1) {
-                                likesString = "Likes by " + splitUsers[0];
+                                likesString = "Liked by " + splitUsers[0];
                             } else if (length == 2) {
-                                likesString = "Likes by " + splitUsers[0] + " and " + splitUsers[1];
+                                likesString = "Liked by " + splitUsers[0] + " and " + splitUsers[1];
                             } else if (length == 3) {
-                                likesString = "Likes by " + splitUsers[0] + ", " + splitUsers[1] +
+                                likesString = "Liked by " + splitUsers[0] + ", " + splitUsers[1] +
                                         " and " + splitUsers[2];
                             } else if (length == 4) {
-                                likesString = "Likes by " + splitUsers[0] + ", " + splitUsers[1] +
+                                likesString = "Liked by " + splitUsers[0] + ", " + splitUsers[1] +
                                         ", " + splitUsers[2] + " and " + splitUsers[3];
                             } else if (length > 4) {
-                                likesString = "Likes by " + splitUsers[0] + ", " + splitUsers[1] +
+                                likesString = "Liked by " + splitUsers[0] + ", " + splitUsers[1] +
                                         ", " + splitUsers[2] + " and " + (splitUsers.length - 3) + " others";
                             }
                             setupWidgets();
@@ -187,8 +187,8 @@ public class ViewPostFragment extends Fragment {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
             Query query = databaseReference
                     .child(getString(R.string.dbname_photos))
-                    .orderByChild(mPhoto.getPhoto_id())
-                    .equalTo(getString(R.string.field_likes));
+                    .child(mPhoto.getPhoto_id())
+                    .child(getString(R.string.field_likes));
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
