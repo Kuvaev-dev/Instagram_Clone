@@ -1,5 +1,6 @@
 package com.mainapp.instagramclone.Utils;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -46,9 +47,15 @@ import java.util.TimeZone;
 public class ViewPostFragment extends Fragment {
     private static final String TAG = "ViewPostFragment";
 
+    public interface onCommentThreadSelectedListener {
+        void onCommentThreadSelected(Photo photo);
+    }
+
+    onCommentThreadSelectedListener mOnCommentThreadSelectedListener;
+
     private BottomNavigationViewEx bottomNavigationViewEx;
     private TextView mBackLabel, mCaption, mUsername, mTimestamp, mLikes;
-    private ImageView mBackArrow, mEllipses, mHeartRed, mHeartWhite, mProfileImage;
+    private ImageView mBackArrow, mEllipses, mHeartRed, mHeartWhite, mProfileImage, mComment;
 
     private int mActivityNum = 0;
     private String photoUrl;
@@ -88,6 +95,7 @@ public class ViewPostFragment extends Fragment {
         mLikes = view.findViewById(R.id.image_likes);
         mHeartWhite = view.findViewById(R.id.image_heart);
         mProfileImage = view.findViewById(R.id.profile_photo);
+        mComment = view.findViewById(R.id.speech_bubble);
 
         heart = new Heart(mHeartWhite, mHeartRed);
 
@@ -107,6 +115,16 @@ public class ViewPostFragment extends Fragment {
         setupBottomNavigationView();
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mOnCommentThreadSelectedListener = (onCommentThreadSelectedListener) getActivity();
+        } catch (ClassCastException exception) {
+            Log.e(TAG, "onAttach: ClassCastException: " + exception.getMessage());
+        }
     }
 
     private void getLikesString() {
@@ -257,6 +275,7 @@ public class ViewPostFragment extends Fragment {
     }
 
     private void getPhotoDetails() {
+        Log.d(TAG, "getPhotoDetails: retrieving photo details.");
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query query = databaseReference
                 .child(getString(R.string.dbname_user_account_settings))
@@ -290,23 +309,31 @@ public class ViewPostFragment extends Fragment {
         mLikes.setText(likesString);
         mCaption.setText(mPhoto.getCaption());
 
+        mBackArrow.setOnClickListener(view -> {
+            Log.d(TAG, "setupWidgets: navigating back.");
+            getActivity().getSupportFragmentManager().popBackStack();
+
+        });
+
+        mComment.setOnClickListener(view -> {
+            Log.d(TAG, "setupWidgets: navigating back.");
+            getActivity().getSupportFragmentManager().popBackStack();
+
+        });
+
         if (likedByCurrentUser) {
             mHeartWhite.setVisibility(View.GONE);
             mHeartRed.setVisibility(View.VISIBLE);
-            mHeartRed.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return gestureDetector.onTouchEvent(motionEvent);
-                }
+            mHeartRed.setOnTouchListener((view, motionEvent) -> {
+                Log.d(TAG, "onTouch: red heart touch detected.");
+                return gestureDetector.onTouchEvent(motionEvent);
             });
         } else {
             mHeartWhite.setVisibility(View.VISIBLE);
             mHeartRed.setVisibility(View.GONE);
-            mHeartWhite.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return gestureDetector.onTouchEvent(motionEvent);
-                }
+            mHeartWhite.setOnTouchListener((view, motionEvent) -> {
+                Log.d(TAG, "onTouch: white heart touch detected.");
+                return gestureDetector.onTouchEvent(motionEvent);
             });
         }
     }

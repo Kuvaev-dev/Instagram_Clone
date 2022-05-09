@@ -13,9 +13,17 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.mainapp.instagramclone.Models.Comment;
+import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.R;
 import com.microprogramer.library.CircularImageView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,8 +82,29 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
         else
             viewHolder.timestamp.setText("Today");
 
-        // Set the username
+        // Set the username and profile image
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseReference
+                .child(mContext.getString(R.string.dbname_user_account_settings))
+                .orderByChild(mContext.getString(R.string.field_user_id))
+                .equalTo(getItem(position).getUser_id());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                    viewHolder.username.setText(singleSnapshot.getValue(UserAccountSettings.class).getUsername());
 
+                    ImageLoader imageLoader = ImageLoader.getInstance();
+                    imageLoader.displayImage(singleSnapshot.getValue(UserAccountSettings.class).getProfile_photo(),
+                            viewHolder.profilePhoto);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: query cancelled.");
+            }
+        });
 
         return convertView;
     }

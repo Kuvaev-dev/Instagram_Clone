@@ -13,7 +13,8 @@ import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.Utils.ViewPostFragment;
 import com.mainapp.instagramclone.R;
 
-public class ProfileActivity extends AppCompatActivity implements ProfileFragment.onGridImageSelectedListener {
+public class ProfileActivity extends AppCompatActivity implements
+        ProfileFragment.onGridImageSelectedListener, ViewPostFragment.onCommentThreadSelectedListener {
     private static final String TAG = "ProfileActivity";
     private static final int ACTIVITY_NUM = 4;
     private static final int NUM_GRID_COLUMNS = 3;
@@ -52,5 +53,10 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(getString(R.string.view_post_fragment));
         transaction.commit();
+    }
+
+    @Override
+    public void onCommentThreadSelected(Photo photo) {
+
     }
 }
