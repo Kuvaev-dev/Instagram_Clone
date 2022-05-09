@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.mainapp.instagramclone.Models.Photo;
+import com.mainapp.instagramclone.Utils.ViewCommentsFragment;
 import com.mainapp.instagramclone.Utils.ViewPostFragment;
 import com.mainapp.instagramclone.R;
 
@@ -57,6 +58,15 @@ public class ProfileActivity extends AppCompatActivity implements
 
     @Override
     public void onCommentThreadSelected(Photo photo) {
+        Log.d(TAG, "onCommentThreadSelected: selected a comments thread.");
+        ViewCommentsFragment commentsFragment = new ViewCommentsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.photo), photo);
+        commentsFragment.setArguments(args);
 
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, commentsFragment);
+        transaction.addToBackStack(getString(R.string.view_comments_fragment));
+        transaction.commit();
     }
 }

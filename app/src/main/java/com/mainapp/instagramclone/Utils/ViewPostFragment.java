@@ -312,13 +312,11 @@ public class ViewPostFragment extends Fragment {
         mBackArrow.setOnClickListener(view -> {
             Log.d(TAG, "setupWidgets: navigating back.");
             getActivity().getSupportFragmentManager().popBackStack();
-
         });
 
         mComment.setOnClickListener(view -> {
             Log.d(TAG, "setupWidgets: navigating back.");
-            getActivity().getSupportFragmentManager().popBackStack();
-
+            mOnCommentThreadSelectedListener.onCommentThreadSelected(mPhoto);
         });
 
         if (likedByCurrentUser) {
