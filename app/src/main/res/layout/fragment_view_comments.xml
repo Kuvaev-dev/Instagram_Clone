@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/relLayout1">
 
+        <include layout="@layout/snippet_comments_toolbar"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -17,6 +18,10 @@
         android:layout_below="@id/relLayout1"
         android:layout_marginBottom="60dp">
 
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listView"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -31,8 +36,8 @@
             android:layout_height="wrap_content"
             android:padding="2dp"
             android:background="@null"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="5dp"
             android:layout_centerVertical="true"
             android:hint="Add a comment..."
             android:textSize="14sp"
@@ -44,6 +49,6 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_checkmark"
             android:id="@+id/ivPostComment"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 </RelativeLayout>
