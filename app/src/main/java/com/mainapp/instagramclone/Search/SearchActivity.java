@@ -2,13 +2,17 @@ package com.mainapp.instagramclone.Search;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +28,11 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
+import com.mainapp.instagramclone.Utils.UserListAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class SearchActivity extends AppCompatActivity {
@@ -38,14 +45,42 @@ public class SearchActivity extends AppCompatActivity {
     private ListView mListView;
 
     private List<User> userList;
+    private UserListAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.d(TAG, "onCreate: started.");
+        mSearchParam = findViewById(R.id.search);
+        mListView = findViewById(R.id.listView);
+
         hideSoftKeyboard();
         setupBottomNavigationView();
+        initTextListener();
+    }
+
+    private void initTextListener() {
+        Log.d(TAG, "initTextListener: initializing.");
+        userList = new ArrayList<>();
+
+        mSearchParam.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text = mSearchParam.getText().toString().toLowerCase(Locale.getDefault());
+                searchForMatch(text);
+            }
+        });
     }
 
     private void searchForMatch(String keyword) {
@@ -67,7 +102,7 @@ public class SearchActivity extends AppCompatActivity {
                         Log.d(TAG, "onDataChange: found user: " + Objects.requireNonNull(singleSnapshot.getValue(User.class)));
                         userList.add(Objects.requireNonNull(singleSnapshot.getValue(User.class)));
                         // Update the users list view
-
+                        updateUsersList();
                     }
                 }
 
@@ -77,6 +112,18 @@ public class SearchActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void updateUsersList() {
+        Log.d(TAG, "updateUsersList: updating users list.");
+        adapter = new UserListAdapter(context, R.layout.layout_user_list_item, userList);
+        mListView.setAdapter(adapter);
+
+        mListView.setOnItemClickListener((adapterView, view, position, id) -> {
+            Log.d(TAG, "updateUsersList: selected user: " + userList.get(position).toString());
+            // Navigate to profile activity
+
+        });
     }
 
     private void hideSoftKeyboard() {
