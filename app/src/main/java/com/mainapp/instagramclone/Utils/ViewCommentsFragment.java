@@ -18,16 +18,26 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.mainapp.instagramclone.Models.Comment;
+import com.mainapp.instagramclone.Models.Like;
 import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 
 public class ViewCommentsFragment extends Fragment {
@@ -61,34 +71,12 @@ public class ViewCommentsFragment extends Fragment {
         mListView = view.findViewById(R.id.listView);
         mComments = new ArrayList<>();
 
-        setupFirebaseAuth();
-
         try {
             mPhoto = getPhotoFromBundle();
+            setupFirebaseAuth();
         } catch (NullPointerException exception) {
             Log.e(TAG, "onCreateView: NullPointerException: " + exception.getMessage());
         }
-
-        Comment firstComment = new Comment();
-        assert mPhoto != null;
-        firstComment.setComment(mPhoto.getCaption());
-        firstComment.setUser_id(mPhoto.getUser_id());
-        firstComment.setDate_created(mPhoto.getDate_created());
-
-        mComments.add(firstComment);
-        CommentListAdapter adapter = new CommentListAdapter(getActivity(), R.layout.layout_comment, mComments);
-        mListView.setAdapter(adapter);
-
-        mCheckMark.setOnClickListener(view1 -> {
-            if (!mComment.getText().toString().equals("")) {
-                Log.d(TAG, "onCreateView: attempting to submit new comment.");
-                addNewComment(mComment.getText().toString());
-                mComment.setText("");
-                closeKeyboard();
-            } else {
-                Toast.makeText(getActivity(), "You can't post a blank comment", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         return view;
     }
@@ -139,6 +127,22 @@ public class ViewCommentsFragment extends Fragment {
             return null;
     }
 
+    private void setupWidgets() {
+        CommentListAdapter adapter = new CommentListAdapter(getActivity(), R.layout.layout_comment, mComments);
+        mListView.setAdapter(adapter);
+
+        mCheckMark.setOnClickListener(view1 -> {
+            if (!mComment.getText().toString().equals("")) {
+                Log.d(TAG, "onCreateView: attempting to submit new comment.");
+                addNewComment(mComment.getText().toString());
+                mComment.setText("");
+                closeKeyboard();
+            } else {
+                Toast.makeText(getActivity(), "You can't post a blank comment", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     // Firebase BEGINNING
 
     /*
@@ -148,7 +152,6 @@ public class ViewCommentsFragment extends Fragment {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
         auth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
 
@@ -157,6 +160,88 @@ public class ViewCommentsFragment extends Fragment {
             else
                 Log.d(TAG, "onAuthStateChanged: signed out.");
         };
+
+        mDatabaseReference.child(getString(R.string.dbname_photos))
+                .child(mPhoto.getPhoto_id())
+                .child(getString(R.string.field_comments))
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Query query = mDatabaseReference
+                                .child(getString(R.string.dbname_photos))
+                                .orderByChild(getString(R.string.field_photo_id))
+                                .equalTo(mPhoto.getPhoto_id());
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                                    Photo photo = new Photo();
+                                    Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
+                                    assert objectMap != null;
+                                    photo.setCaption(Objects.requireNonNull(objectMap.get(getString(R.string.field_caption))).toString());
+                                    photo.setTags(Objects.requireNonNull(objectMap.get(getString(R.string.field_tags))).toString());
+                                    photo.setPhoto_id(Objects.requireNonNull(objectMap.get(getString(R.string.field_photo_id))).toString());
+                                    photo.setDate_created(Objects.requireNonNull(objectMap.get(getString(R.string.field_date_created))).toString());
+                                    photo.setImage_path(Objects.requireNonNull(objectMap.get(getString(R.string.field_image_path))).toString());
+
+                                    mComments.clear();
+                                    Comment firstComment = new Comment();
+                                    assert mPhoto != null;
+                                    firstComment.setComment(mPhoto.getCaption());
+                                    firstComment.setUser_id(mPhoto.getUser_id());
+                                    firstComment.setDate_created(mPhoto.getDate_created());
+                                    mComments.add(firstComment);
+
+                                    for (DataSnapshot ds: singleSnapshot.child(getString(R.string.field_comments)).getChildren()) {
+                                        Comment comment = new Comment();
+                                        comment.setUser_id(Objects.requireNonNull(ds.getValue(Comment.class)).getUser_id());
+                                        comment.setComment(Objects.requireNonNull(ds.getValue(Comment.class)).getComment());
+                                        comment.setDate_created(Objects.requireNonNull(ds.getValue(Comment.class)).getDate_created());
+                                        mComments.add(comment);
+                                    }
+
+                                    photo.setComments(mComments);
+                                    mPhoto = photo;
+
+                                    setupWidgets();
+
+//                    List<Like> likesList = new ArrayList<>();
+//                    for (DataSnapshot ds: singleSnapshot.child(getString(R.string.field_likes)).getChildren()) {
+//                        Like like = new Like();
+//                        like.setUser_id(ds.getValue(Like.class).getUser_id());
+//                        likesList.add(like);
+//                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.d(TAG, "onCancelled: query cancelled.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     @Override
