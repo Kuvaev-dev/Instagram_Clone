@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.mainapp.instagramclone.Models.Comment;
 import com.mainapp.instagramclone.Models.Like;
 import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.Models.User;
@@ -38,9 +39,13 @@ import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -54,7 +59,7 @@ public class ViewPostFragment extends Fragment {
     onCommentThreadSelectedListener mOnCommentThreadSelectedListener;
 
     private BottomNavigationViewEx bottomNavigationViewEx;
-    private TextView mBackLabel, mCaption, mUsername, mTimestamp, mLikes;
+    private TextView mBackLabel, mCaption, mUsername, mTimestamp, mLikes, mComments;
     private ImageView mBackArrow, mEllipses, mHeartRed, mHeartWhite, mProfileImage, mComment;
 
     private int mActivityNum = 0;
@@ -96,17 +101,54 @@ public class ViewPostFragment extends Fragment {
         mHeartWhite = view.findViewById(R.id.image_heart);
         mProfileImage = view.findViewById(R.id.profile_photo);
         mComment = view.findViewById(R.id.speech_bubble);
+        mComments = view.findViewById(R.id.image_comments_link);
 
         heart = new Heart(mHeartWhite, mHeartRed);
 
         gestureDetector = new GestureDetector(getActivity(), new GestureListener());
         try {
-            mPhoto = getPhotoFromBundle();
-            assert mPhoto != null;
-            UniversalImageLoader.setImage(mPhoto.getImage_path(), mPostImage, null, "");
+            //mPhoto = getPhotoFromBundle();
+            //assert mPhoto != null;
+            UniversalImageLoader.setImage(getPhotoFromBundle().getImage_path(), mPostImage, null, "");
             mActivityNum = getActivityNumFromBundle();
-            getPhotoDetails();
-            getLikesString();
+            String photo_id = getPhotoFromBundle().getPhoto_id();
+            Query query = FirebaseDatabase.getInstance().getReference()
+                    .child(getString(R.string.dbname_user_photos))
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                        Photo newPhoto = new Photo();
+                        Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
+                        assert objectMap != null;
+                        newPhoto.setCaption(Objects.requireNonNull(objectMap.get(getString(R.string.field_caption))).toString());
+                        newPhoto.setTags(Objects.requireNonNull(objectMap.get(getString(R.string.field_tags))).toString());
+                        newPhoto.setPhoto_id(Objects.requireNonNull(objectMap.get(getString(R.string.field_photo_id))).toString());
+                        newPhoto.setDate_created(Objects.requireNonNull(objectMap.get(getString(R.string.field_date_created))).toString());
+                        newPhoto.setImage_path(Objects.requireNonNull(objectMap.get(getString(R.string.field_image_path))).toString());
+
+                        List<Comment> mComments = new ArrayList<>();
+                        for (DataSnapshot ds: singleSnapshot.child(getString(R.string.field_comments)).getChildren()) {
+                            Comment comment = new Comment();
+                            comment.setUser_id(Objects.requireNonNull(ds.getValue(Comment.class)).getUser_id());
+                            comment.setComment(Objects.requireNonNull(ds.getValue(Comment.class)).getComment());
+                            comment.setDate_created(Objects.requireNonNull(ds.getValue(Comment.class)).getDate_created());
+                            mComments.add(comment);
+                        }
+                        newPhoto.setComments(mComments);
+
+                        mPhoto = newPhoto;
+                        getPhotoDetails();
+                        getLikesString();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d(TAG, "onCancelled: query cancelled.");
+                }
+            });
         } catch (NullPointerException exception) {
             Log.e(TAG, "onCreateView: NullPointerException: " + exception.getMessage());
         }
@@ -308,6 +350,17 @@ public class ViewPostFragment extends Fragment {
         mUsername.setText(userAccountSettings.getUsername());
         mLikes.setText(likesString);
         mCaption.setText(mPhoto.getCaption());
+
+        if (mPhoto.getComments().size() > 0) {
+            mComments.setText("View all " + mPhoto.getComments().size() + " comments");
+        } else {
+            mComments.setText("");
+        }
+
+        mComments.setOnClickListener(view -> {
+            Log.d(TAG, "setupWidgets: navigating to comments thread.");
+            mOnCommentThreadSelectedListener.onCommentThreadSelected(mPhoto);
+        });
 
         mBackArrow.setOnClickListener(view -> {
             Log.d(TAG, "setupWidgets: navigating back.");

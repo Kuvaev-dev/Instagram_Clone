@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.mainapp.instagramclone.Models.Comment;
 import com.mainapp.instagramclone.Models.Like;
 import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
@@ -144,6 +145,16 @@ public class ProfileFragment extends Fragment {
                     photo.setPhoto_id(Objects.requireNonNull(objectMap.get(getString(R.string.field_photo_id))).toString());
                     photo.setDate_created(Objects.requireNonNull(objectMap.get(getString(R.string.field_date_created))).toString());
                     photo.setImage_path(Objects.requireNonNull(objectMap.get(getString(R.string.field_image_path))).toString());
+
+                    ArrayList<Comment> mComments = new ArrayList<>();
+                    for (DataSnapshot ds: singleSnapshot.child(getString(R.string.field_comments)).getChildren()) {
+                        Comment comment = new Comment();
+                        comment.setUser_id(Objects.requireNonNull(ds.getValue(Comment.class)).getUser_id());
+                        comment.setComment(Objects.requireNonNull(ds.getValue(Comment.class)).getComment());
+                        comment.setDate_created(Objects.requireNonNull(ds.getValue(Comment.class)).getDate_created());
+                        mComments.add(comment);
+                    }
+                    photo.setComments(mComments);
 
                     List<Like> likeList = new ArrayList<>();
                     for (DataSnapshot ds: singleSnapshot.child(getString(R.string.field_likes)).getChildren()) {
