@@ -66,6 +66,7 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
             viewHolder.reply = convertView.findViewById(R.id.comment_reply);
             viewHolder.profilePhoto = convertView.findViewById(R.id.comment_profile_image);
             viewHolder.like = convertView.findViewById(R.id.comment_like);
+            viewHolder.likes = convertView.findViewById(R.id.comment_likes);
 
             convertView.setTag(viewHolder);
         } else {
