@@ -61,6 +61,7 @@ public class ViewPostFragment extends Fragment {
     private BottomNavigationViewEx bottomNavigationViewEx;
     private TextView mBackLabel, mCaption, mUsername, mTimestamp, mLikes, mComments;
     private ImageView mBackArrow, mEllipses, mHeartRed, mHeartWhite, mProfileImage, mComment;
+    private SquareImageView mPostImage;
 
     private int mActivityNum = 0;
     private String photoUrl;
@@ -72,6 +73,7 @@ public class ViewPostFragment extends Fragment {
     private String likesString;
     private Photo mPhoto;
     private Heart heart;
+    private User mCurrentUser;
 
     // Firebase
     private FirebaseAuth auth;
@@ -88,7 +90,7 @@ public class ViewPostFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_post, container, false);
-        SquareImageView mPostImage = view.findViewById(R.id.post_image);
+        mPostImage = view.findViewById(R.id.post_image);
         bottomNavigationViewEx = view.findViewById(R.id.bottomNavViewBar);
         mBackArrow = view.findViewById(R.id.backArrow);
         mBackLabel = view.findViewById(R.id.tvBackLabel);
@@ -106,6 +108,14 @@ public class ViewPostFragment extends Fragment {
         heart = new Heart(mHeartWhite, mHeartRed);
 
         gestureDetector = new GestureDetector(getActivity(), new GestureListener());
+
+        setupFirebaseAuth();
+        setupBottomNavigationView();
+
+        return view;
+    }
+
+    private void init() {
         try {
             //mPhoto = getPhotoFromBundle();
             //assert mPhoto != null;
@@ -139,8 +149,10 @@ public class ViewPostFragment extends Fragment {
                         newPhoto.setComments(mComments);
 
                         mPhoto = newPhoto;
+
+                        getCurrentUser();
                         getPhotoDetails();
-                        getLikesString();
+                        //getLikesString();
                     }
                 }
 
@@ -152,11 +164,14 @@ public class ViewPostFragment extends Fragment {
         } catch (NullPointerException exception) {
             Log.e(TAG, "onCreateView: NullPointerException: " + exception.getMessage());
         }
+    }
 
-        setupFirebaseAuth();
-        setupBottomNavigationView();
-
-        return view;
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isAdded()) {
+            init();
+        }
     }
 
     @Override
@@ -197,7 +212,7 @@ public class ViewPostFragment extends Fragment {
                                 mUsers.append(",");
                             }
                             String[] splitUsers = mUsers.toString().split(",");
-                            likedByCurrentUser = mUsers.toString().contains(userAccountSettings.getUsername() + ",");
+                            likedByCurrentUser = mUsers.toString().contains(mCurrentUser.getUsername() + ",");
                             int length = splitUsers.length;
                             if (length == 1) {
                                 likesString = "Liked by " + splitUsers[0];
@@ -232,6 +247,28 @@ public class ViewPostFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    private void getCurrentUser() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseReference
+                .child(getString(R.string.dbname_users))
+                .orderByChild(getString(R.string.field_user_id))
+                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                    mCurrentUser = singleSnapshot.getValue(User.class);
+                }
+                getLikesString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: query cancelled.");
             }
         });
     }

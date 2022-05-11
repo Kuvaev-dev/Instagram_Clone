@@ -18,7 +18,9 @@ import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.ViewProfileFragment;
 
 public class ProfileActivity extends AppCompatActivity implements
-        ProfileFragment.onGridImageSelectedListener, ViewPostFragment.onCommentThreadSelectedListener {
+        ProfileFragment.onGridImageSelectedListener,
+        ViewPostFragment.onCommentThreadSelectedListener,
+        ViewProfileFragment.onGridImageSelectedListener {
     private static final String TAG = "ProfileActivity";
     private static final int ACTIVITY_NUM = 4;
     private static final int NUM_GRID_COLUMNS = 3;
