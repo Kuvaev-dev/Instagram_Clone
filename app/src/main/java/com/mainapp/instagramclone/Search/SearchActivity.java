@@ -1,6 +1,7 @@
 package com.mainapp.instagramclone.Search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.mainapp.instagramclone.Models.User;
+import com.mainapp.instagramclone.Profile.ProfileActivity;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 import com.mainapp.instagramclone.Utils.UserListAdapter;
@@ -122,7 +124,10 @@ public class SearchActivity extends AppCompatActivity {
         mListView.setOnItemClickListener((adapterView, view, position, id) -> {
             Log.d(TAG, "updateUsersList: selected user: " + userList.get(position).toString());
             // Navigate to profile activity
-
+            Intent intent = new Intent(SearchActivity.this, ProfileActivity.class);
+            intent.putExtra(getString(R.string.calling_activity), getString(R.string.search_activity));
+            intent.putExtra(getString(R.string.intent_user), userList.get(position));
+            startActivity(intent);
         });
     }
 
