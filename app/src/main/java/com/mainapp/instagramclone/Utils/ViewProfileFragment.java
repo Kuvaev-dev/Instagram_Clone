@@ -62,13 +62,8 @@ public class ViewProfileFragment extends Fragment {
     private ImageView profileMenu;
     private Context context;
     private BottomNavigationViewEx bottomNavigationViewEx;
-    private TextView tDisplayName;
-    private TextView tUsername;
-    private TextView tWebsite;
-    private TextView tDescription;
-    private TextView tPosts;
-    private TextView tFollowers;
-    private TextView tFollowing;
+    private TextView tDisplayName, tUsername, tWebsite, tDescription, tPosts, tFollowers, tFollowing,
+            tFollow, tUnfollow, editProfile;
     private CircularImageView profilePhoto;
     private ProgressBar progressBar;
     private GridView gridView;
@@ -96,6 +91,9 @@ public class ViewProfileFragment extends Fragment {
         toolbar = view.findViewById(R.id.profileToolBar);
         profileMenu = view.findViewById(R.id.profileMenu);
         bottomNavigationViewEx = view.findViewById(R.id.bottomNavViewBar);
+        tFollow = view.findViewById(R.id.follow);
+        tUnfollow = view.findViewById(R.id.unfollow);
+        editProfile = view.findViewById(R.id.textEditProfile);
         context = getActivity();
         Log.d(TAG, "onCreateView: started.");
 
@@ -111,16 +109,53 @@ public class ViewProfileFragment extends Fragment {
         setupBottomNavigationView();
         setupToolBar();
         setupFirebaseAuth();
+        isFollowing();
+
+        tFollow.setOnClickListener(view1 -> {
+            Log.d(TAG, "onCreateView: now following: " + mUser.getUsername());
+            FirebaseDatabase.getInstance().getReference()
+                    .child(getString(R.string.dbname_following))
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(mUser.getUser_id())
+                    .child(getString(R.string.field_user_id))
+                    .setValue(mUser.getUser_id());
+
+            FirebaseDatabase.getInstance().getReference()
+                    .child(getString(R.string.dbname_followers))
+                    .child(mUser.getUser_id())
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(getString(R.string.field_user_id))
+                    .setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+            setFollowing();
+        });
+
+        tUnfollow.setOnClickListener(view1 -> {
+            Log.d(TAG, "onCreateView: now unfollowing: " + mUser.getUsername());
+            FirebaseDatabase.getInstance().getReference()
+                    .child(getString(R.string.dbname_following))
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(mUser.getUser_id())
+                    .removeValue();
+
+            FirebaseDatabase.getInstance().getReference()
+                    .child(getString(R.string.dbname_followers))
+                    .child(mUser.getUser_id())
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .removeValue();
+
+            setUnfollowing();
+        });
+
         //setupGridView();
 
-//        TextView editProfile = view.findViewById(R.id.textEditProfile);
-//        editProfile.setOnClickListener(view1 -> {
-//            Log.d(TAG, "onCreateView: navigating to " + context.getString(R.string.edit_profile_fragment));
-//            Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
-//            intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
-//            startActivity(intent);
-//            getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//        });
+        editProfile.setOnClickListener(view1 -> {
+            Log.d(TAG, "onCreateView: navigating to " + context.getString(R.string.edit_profile_fragment));
+            Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+            intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
+            startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        });
 
         return view;
     }
@@ -196,6 +231,51 @@ public class ViewProfileFragment extends Fragment {
                 Log.d(TAG, "onCancelled: query cancelled.");
             }
         });
+    }
+
+    private void isFollowing() {
+        Log.d(TAG, "isFollowing: checking is following this user.");
+        setUnfollowing();
+        DatabaseReference ifDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        Query ifQuery = ifDatabaseReference
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .orderByChild(getString(R.string.field_user_id))
+                .equalTo(mUser.getUser_id());
+        ifQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                    Log.d(TAG, "onDataChange: found user: " + singleSnapshot.getValue());
+                    setFollowing();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void setFollowing() {
+        Log.d(TAG, "setFollowing: updating UI for following this user.");
+        tFollow.setVisibility(View.GONE);
+        tUnfollow.setVisibility(View.VISIBLE);
+        editProfile.setVisibility(View.GONE);
+    }
+
+    private void setUnfollowing() {
+        Log.d(TAG, "setFollowing: updating UI for unfollowing this user.");
+        tFollow.setVisibility(View.VISIBLE);
+        tUnfollow.setVisibility(View.GONE);
+        editProfile.setVisibility(View.GONE);
+    }
+
+    private void setCurrentUsersProfile() {
+        Log.d(TAG, "setFollowing: updating UI for showing this user their own profile.");
+        tFollow.setVisibility(View.GONE);
+        tUnfollow.setVisibility(View.GONE);
+        editProfile.setVisibility(View.VISIBLE);
     }
 
     private void setupImageGrid(final ArrayList<Photo> photos) {
