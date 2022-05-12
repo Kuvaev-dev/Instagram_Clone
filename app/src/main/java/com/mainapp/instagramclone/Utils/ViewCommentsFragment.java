@@ -107,7 +107,7 @@ public class ViewCommentsFragment extends Fragment {
                 .setValue(comment);
 
         mDatabaseReference.child(getString(R.string.dbname_user_photos))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(mPhoto.getUser_id())
                 .child(mPhoto.getPhoto_id())
                 .child(getString(R.string.field_comments))
                 .child(commentId)

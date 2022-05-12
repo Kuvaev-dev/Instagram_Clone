@@ -31,6 +31,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.mainapp.instagramclone.Models.Comment;
 import com.mainapp.instagramclone.Models.Like;
 import com.mainapp.instagramclone.Models.Photo;
+import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
 import com.mainapp.instagramclone.R;
@@ -78,6 +79,10 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseMethods firebaseMethods;
 
+    private int mFollowersCount = 0;
+    private int mFollowingCount = 0;
+    private int mPostsCount = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,6 +107,9 @@ public class ProfileFragment extends Fragment {
         setupToolBar();
         setupFirebaseAuth();
         setupGridView();
+        getFollowersCount();
+        getFollowingCount();
+        getPostsCount();
 
         TextView editProfile = view.findViewById(R.id.textEditProfile);
         editProfile.setOnClickListener(view1 -> {
@@ -139,31 +147,35 @@ public class ProfileFragment extends Fragment {
                 for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
                     Photo photo = new Photo();
                     Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
-                    assert objectMap != null;
-                    photo.setCaption(Objects.requireNonNull(objectMap.get(getString(R.string.field_caption))).toString());
-                    photo.setTags(Objects.requireNonNull(objectMap.get(getString(R.string.field_tags))).toString());
-                    photo.setPhoto_id(Objects.requireNonNull(objectMap.get(getString(R.string.field_photo_id))).toString());
-                    photo.setDate_created(Objects.requireNonNull(objectMap.get(getString(R.string.field_date_created))).toString());
-                    photo.setImage_path(Objects.requireNonNull(objectMap.get(getString(R.string.field_image_path))).toString());
+                    try {
+                        assert objectMap != null;
+                        photo.setCaption(Objects.requireNonNull(objectMap.get(getString(R.string.field_caption))).toString());
+                        photo.setTags(Objects.requireNonNull(objectMap.get(getString(R.string.field_tags))).toString());
+                        photo.setPhoto_id(Objects.requireNonNull(objectMap.get(getString(R.string.field_photo_id))).toString());
+                        photo.setDate_created(Objects.requireNonNull(objectMap.get(getString(R.string.field_date_created))).toString());
+                        photo.setImage_path(Objects.requireNonNull(objectMap.get(getString(R.string.field_image_path))).toString());
 
-                    ArrayList<Comment> mComments = new ArrayList<>();
-                    for (DataSnapshot ds: singleSnapshot.child(getString(R.string.field_comments)).getChildren()) {
-                        Comment comment = new Comment();
-                        comment.setUser_id(Objects.requireNonNull(ds.getValue(Comment.class)).getUser_id());
-                        comment.setComment(Objects.requireNonNull(ds.getValue(Comment.class)).getComment());
-                        comment.setDate_created(Objects.requireNonNull(ds.getValue(Comment.class)).getDate_created());
-                        mComments.add(comment);
-                    }
-                    photo.setComments(mComments);
+                        ArrayList<Comment> mComments = new ArrayList<>();
+                        for (DataSnapshot ds : singleSnapshot.child(getString(R.string.field_comments)).getChildren()) {
+                            Comment comment = new Comment();
+                            comment.setUser_id(Objects.requireNonNull(ds.getValue(Comment.class)).getUser_id());
+                            comment.setComment(Objects.requireNonNull(ds.getValue(Comment.class)).getComment());
+                            comment.setDate_created(Objects.requireNonNull(ds.getValue(Comment.class)).getDate_created());
+                            mComments.add(comment);
+                        }
+                        photo.setComments(mComments);
 
-                    List<Like> likeList = new ArrayList<>();
-                    for (DataSnapshot ds: singleSnapshot.child(getString(R.string.field_likes)).getChildren()) {
-                        Like like = new Like();
-                        like.setUser_id(ds.getValue(Like.class).getUser_id());
-                        likeList.add(like);
+                        List<Like> likeList = new ArrayList<>();
+                        for (DataSnapshot ds : singleSnapshot.child(getString(R.string.field_likes)).getChildren()) {
+                            Like like = new Like();
+                            like.setUser_id(Objects.requireNonNull(ds.getValue(Like.class)).getUser_id());
+                            likeList.add(like);
+                        }
+                        photo.setLikes(likeList);
+                        photos.add(photo);
+                    } catch (NullPointerException exception) {
+                        Log.e(TAG, "onDataChange: NullPointerException: " + exception.getMessage());
                     }
-                    photo.setLikes(likeList);
-                    photos.add(photo);
                 }
 
                 // Setup image grid
@@ -190,20 +202,85 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    private void getFollowersCount() {
+        mFollowersCount = 0;
+        DatabaseReference gfDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        Query gfQuery = gfDatabaseReference
+                .child(getString(R.string.dbname_followers))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        gfQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                    Log.d(TAG, "onDataChange: found follower: " + singleSnapshot.getValue());
+                    mFollowersCount++;
+                }
+                tFollowers.setText(String.valueOf(mFollowersCount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getFollowingCount() {
+        mFollowingCount = 0;
+        DatabaseReference gfDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        Query gfQuery = gfDatabaseReference
+                .child(getString(R.string.dbname_following))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        gfQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                    Log.d(TAG, "onDataChange: found following user: " + singleSnapshot.getValue());
+                    mFollowingCount++;
+                }
+                tFollowing.setText(String.valueOf(mFollowingCount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getPostsCount() {
+        mPostsCount = 0;
+        DatabaseReference gfDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        Query gfQuery = gfDatabaseReference
+                .child(getString(R.string.dbname_user_photos))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        gfQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                    Log.d(TAG, "onDataChange: found post: " + singleSnapshot.getValue());
+                    mPostsCount++;
+                }
+                tPosts.setText(String.valueOf(mPostsCount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void setProfileWidgets(UserSettings userSettings) {
-        //Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from database: " + userSettings.toString());
-        //User user = userSettings.getUser();
+        /*Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from database: " + userSettings.toString());
+        User user = userSettings.getUser();*/
         UserAccountSettings userAccountSettings = userSettings.getUserAccountSettings();
         UniversalImageLoader.setImage(userAccountSettings.getProfile_photo(), profilePhoto, null, "");
         tDisplayName.setText(userAccountSettings.getDisplay_name());
         tUsername.setText(userAccountSettings.getUsername());
         tWebsite.setText(userAccountSettings.getWebsite());
         tDescription.setText(userAccountSettings.getDescription());
-        tPosts.setText(String.valueOf(userAccountSettings.getPosts()));
-        tFollowers.setText(String.valueOf(userAccountSettings.getFollowers()));
-        tFollowing.setText(String.valueOf(userAccountSettings.getFollowing()));
         progressBar.setVisibility(View.GONE);
-
     }
 
     private void setupToolBar() {
