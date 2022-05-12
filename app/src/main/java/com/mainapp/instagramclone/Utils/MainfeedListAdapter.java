@@ -1,6 +1,7 @@
 package com.mainapp.instagramclone.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -21,15 +22,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.mainapp.instagramclone.Home.HomeActivity;
+import com.mainapp.instagramclone.Models.Comment;
 import com.mainapp.instagramclone.Models.Like;
 import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
+import com.mainapp.instagramclone.Profile.ProfileActivity;
 import com.mainapp.instagramclone.R;
 import com.microprogramer.library.CircularImageView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -97,6 +103,77 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+        // Set the current username and likes string
+        getCurrentUsername();
+        getLikesString(holder);
+
+        // Ser the comments
+        List<Comment> comments = getItem(position).getComments();
+        holder.comments.setText("View all " + comments.size() + " comments");
+        holder.comment.setOnClickListener(view -> {
+            Log.d(TAG, "getView: loading comment thread for " + getItem(position).getPhoto_id());
+            ((HomeActivity) mContext).onCommentThreadSelected(getItem(position), holder.settings);
+        });
+
+        // Set the time it was posted
+        String timestampDiff = getTimestampDifference(getItem(position));
+        if (!timestampDiff.equals("0")) {
+            holder.timeDelta.setText(timestampDiff + " DAYS AGO");
+        } else {
+            holder.timeDelta.setText("TODAY");
+        }
+
+        // Set the profile image
+        final ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(getItem(position).getImage_path(), holder.image);
+
+        // Get the profile image and username
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseReference
+                .child(mContext.getString(R.string.dbname_user_account_settings))
+                .orderByChild(mContext.getString(R.string.field_user_id))
+                .equalTo(getItem(position).getUser_id());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot singleSnapshot : snapshot.getChildren()) {
+                    //currentUsername = Objects.requireNonNull(singleSnapshot.getValue(UserAccountSettings.class)).getUsername();
+                    Log.d(TAG, "onDataChange: found user: " +
+                            Objects.requireNonNull(singleSnapshot.getValue(UserAccountSettings.class)).getUsername());
+
+                    holder.username.setText(Objects.requireNonNull(singleSnapshot.getValue(UserAccountSettings.class)).getUsername());
+                    holder.username.setOnClickListener(view -> {
+                        Log.d(TAG, "onDataChange: navigating to profile: " + holder.user.getUsername());
+                        Intent intent = new Intent(mContext, ProfileActivity.class);
+                        intent.putExtra(mContext.getString(R.string.calling_activity),
+                                mContext.getString(R.string.home_activity));
+                        intent.putExtra(mContext.getString(R.string.intent_user), holder.user);
+                        mContext.startActivity(intent);
+                    });
+
+                    imageLoader.displayImage(Objects.requireNonNull(singleSnapshot.getValue(UserAccountSettings.class)).getProfile_photo(), holder.mProfileImage);
+                    holder.mProfileImage.setOnClickListener(view -> {
+                        Log.d(TAG, "onDataChange: navigating to profile: " + holder.user.getUsername());
+                        Intent intent = new Intent(mContext, ProfileActivity.class);
+                        intent.putExtra(mContext.getString(R.string.calling_activity),
+                                mContext.getString(R.string.home_activity));
+                        intent.putExtra(mContext.getString(R.string.intent_user), holder.user);
+                        mContext.startActivity(intent);
+                    });
+
+                    holder.settings = Objects.requireNonNull(singleSnapshot.getValue(UserAccountSettings.class));
+                    holder.comment.setOnClickListener(view -> {
+                        ((HomeActivity) mContext).onCommentThreadSelected(getItem(position), holder.settings);
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         return convertView;
     }
@@ -185,6 +262,28 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
 
         holder.heart.toggleLike();
         getLikesString(holder);
+    }
+
+    private void getCurrentUsername() {
+        Log.d(TAG, "getCurrentUsername: retrieving user account settings.");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseReference
+                .child(mContext.getString(R.string.dbname_users))
+                .orderByChild(mContext.getString(R.string.field_user_id))
+                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot singleSnapshot : snapshot.getChildren()) {
+                    currentUsername = Objects.requireNonNull(singleSnapshot.getValue(UserAccountSettings.class)).getUsername();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void getLikesString(final ViewHolder holder) {

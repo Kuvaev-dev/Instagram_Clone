@@ -1,6 +1,7 @@
 package com.mainapp.instagramclone.Home;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
@@ -15,10 +16,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.mainapp.instagramclone.Login.LoginActivity;
+import com.mainapp.instagramclone.Models.Photo;
+import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 import com.mainapp.instagramclone.Utils.SectionPagerAdapter;
 import com.mainapp.instagramclone.Utils.UniversalImageLoader;
+import com.mainapp.instagramclone.Utils.ViewCommentsFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.Objects;
@@ -42,6 +46,20 @@ public class HomeActivity extends AppCompatActivity {
         initImageLoader();
         setupBottomNavigationView();
         setupViewPager();
+    }
+
+    public void onCommentThreadSelected(Photo photo, UserAccountSettings settings) {
+        Log.d(TAG, "onCommentThreadSelected: selected a comment thread.");
+        ViewCommentsFragment viewCommentsFragment = new ViewCommentsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.bundle_photo), photo);
+        args.putParcelable(getString(R.string.bundle_user_account_settings), settings);
+        viewCommentsFragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, viewCommentsFragment);
+        transaction.addToBackStack(getString(R.string.view_comments_fragment));
+        transaction.commit();
     }
 
     private void initImageLoader() {
