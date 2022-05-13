@@ -57,6 +57,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mLayoutResource = resource;
         this.mContext = context;
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     static class ViewHolder {
@@ -93,7 +94,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             holder.comments = convertView.findViewById(R.id.image_comments_link);
             holder.caption = convertView.findViewById(R.id.image_caption);
             holder.timeDelta = convertView.findViewById(R.id.image_time_posted);
-            holder.mProfileImage = convertView.findViewById(R.id.profile_image);
+            holder.mProfileImage = convertView.findViewById(R.id.profile_photo);
             holder.heart = new Heart(holder.heartWhite, holder.heartRed);
             holder.photo = getItem(position);
             holder.gestureDetector = new GestureDetector(mContext, new GestureListener(holder));
@@ -166,6 +167,26 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                     holder.comment.setOnClickListener(view -> {
                         ((HomeActivity) mContext).onCommentThreadSelected(getItem(position), holder.settings);
                     });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        Query userQuery = databaseReference
+                .child(mContext.getString(R.string.dbname_users))
+                .orderByChild(mContext.getString(R.string.field_user_id))
+                .equalTo(getItem(position).getUser_id());
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot singleSnapshot : snapshot.getChildren()) {
+                    Log.d(TAG, "onDataChange: found user: " +
+                            Objects.requireNonNull(singleSnapshot.getValue(User.class)).getUsername());
+                    holder.user = Objects.requireNonNull(singleSnapshot.getValue(User.class));
                 }
             }
 
