@@ -37,9 +37,12 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
     private ArrayList<Photo> mPhotos;
+    private ArrayList<Photo> mPaginatedPhotos;
     private ArrayList<String> mFollowing;
     private ListView mListView;
     private MainfeedListAdapter mAdapter;
+
+    private int mResults;
 
     @Nullable
     @Override
@@ -69,6 +72,7 @@ public class HomeFragment extends Fragment {
                     mFollowing.add(Objects.requireNonNull(singleSnapshot.child(getString(
                             R.string.field_user_id)).getValue()).toString());
                 }
+                mFollowing.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 getPhotos();
             }
 
@@ -128,11 +132,56 @@ public class HomeFragment extends Fragment {
     }
 
     private void displayPhotos() {
+        mPaginatedPhotos = new ArrayList<>();
         if (mPhotos != null) {
-            Collections.sort(mPhotos, (object1, object2) ->
-                    object2.getDate_created().compareTo(object1.getDate_created()));
+            try {
+                Collections.sort(mPhotos, (object1, object2) ->
+                        object2.getDate_created().compareTo(object1.getDate_created()));
+
+                int iterations = mPhotos.size();
+                if (iterations > 10) {
+                    iterations = 10;
+                }
+
+                mResults = 10;
+                for (int i = 0; i < iterations; i++) {
+                    mPaginatedPhotos.add(mPhotos.get(i));
+                }
+
+                mAdapter = new MainfeedListAdapter(getActivity(), R.layout.layout_mainfeed_listitem, mPaginatedPhotos);
+                mListView.setAdapter(mAdapter);
+            } catch (NullPointerException nullPointerException) {
+                Log.e(TAG, "displayPhotos: NullPointerException: " + nullPointerException.getMessage());
+            } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                Log.e(TAG, "displayPhotos: IndexOutOfBoundsException: " + indexOutOfBoundsException.getMessage());
+            }
         }
-        mAdapter = new MainfeedListAdapter(getActivity(), R.layout.layout_mainfeed_listitem, mPhotos);
-        mListView.setAdapter(mAdapter);
+    }
+
+    public void displayMorePhotos() {
+        Log.d(TAG, "displayMorePhotos: displaying more photos.");
+        try {
+            if (mPhotos.size() > mResults && mPhotos.size() > 0) {
+                int iterations;
+                if (mPhotos.size() > (mResults + 10)) {
+                    Log.d(TAG, "displayMorePhotos: there are greater then 10 photos.");
+                    iterations = 10;
+                } else {
+                    Log.d(TAG, "displayMorePhotos: there is less then 10 more photos.");
+                    iterations = mPhotos.size() - mResults;
+                }
+
+                // Add the new photos to the paginated results
+                for (int i = mResults; i < mResults + iterations; i++) {
+                    mPaginatedPhotos.add(mPhotos.get(i));
+                }
+                mResults += iterations;
+                mAdapter.notifyDataSetChanged();
+            }
+        } catch (NullPointerException nullPointerException) {
+            Log.e(TAG, "displayPhotos: NullPointerException: " + nullPointerException.getMessage());
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            Log.e(TAG, "displayPhotos: IndexOutOfBoundsException: " + indexOutOfBoundsException.getMessage());
+        }
     }
 }

@@ -11,7 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mainapp.instagramclone.Models.Photo;
+import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Utils.ViewCommentsFragment;
 import com.mainapp.instagramclone.Utils.ViewPostFragment;
 import com.mainapp.instagramclone.R;
@@ -43,16 +45,26 @@ public class ProfileActivity extends AppCompatActivity implements
         if (intent.hasExtra(getString(R.string.calling_activity))) {
             Log.d(TAG, "init: searching for the user object attached as intent extra.");
             if (intent.hasExtra(getString(R.string.intent_user))) {
-                Log.d(TAG, "init: inflating view profile.");
-                ViewProfileFragment profileFragment = new ViewProfileFragment();
-                Bundle args = new Bundle();
-                args.putParcelable(getString(R.string.intent_user), intent.getParcelableExtra(getString(R.string.intent_user)));
-                profileFragment.setArguments(args);
+                User user = intent.getParcelableExtra(getString(R.string.intent_user));
+                if (!user.getUser_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    Log.d(TAG, "init: inflating view profile.");
+                    ViewProfileFragment profileFragment = new ViewProfileFragment();
+                    Bundle args = new Bundle();
+                    args.putParcelable(getString(R.string.intent_user), intent.getParcelableExtra(getString(R.string.intent_user)));
+                    profileFragment.setArguments(args);
 
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, profileFragment);
-                transaction.addToBackStack(getString(R.string.view_profile_fragment));
-                transaction.commit();
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, profileFragment);
+                    transaction.addToBackStack(getString(R.string.view_profile_fragment));
+                    transaction.commit();
+                } else {
+                    Log.d(TAG, "init: inflating profile.");
+                    ProfileFragment profileFragment = new ProfileFragment();
+                    FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, profileFragment);
+                    transaction.addToBackStack(getString(R.string.profile_fragment));
+                    transaction.commit();
+                }
             } else {
                 Toast.makeText(ProfileActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }

@@ -50,7 +50,7 @@ public class ShareActivity extends AppCompatActivity {
         SectionPagerAdapter sectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
         sectionPagerAdapter.addFragment(new GalleryFragment());
         sectionPagerAdapter.addFragment(new PhotoFragment());
-        viewPager = findViewById(R.id.container);
+        viewPager = findViewById(R.id.viewpager_container);
         viewPager.setAdapter(sectionPagerAdapter);
 
         TabLayout tabLayout = findViewById(R.id.tabsBottom);

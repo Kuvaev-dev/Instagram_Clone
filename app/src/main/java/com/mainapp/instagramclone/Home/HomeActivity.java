@@ -23,6 +23,7 @@ import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
+import com.mainapp.instagramclone.Utils.MainfeedListAdapter;
 import com.mainapp.instagramclone.Utils.SectionPagerAdapter;
 import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 import com.mainapp.instagramclone.Utils.ViewCommentsFragment;
@@ -30,7 +31,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements
+        MainfeedListAdapter.onLoadMoreItemsListener {
     private static final String TAG = "HomeActivity";
     private static final int ACTIVITY_NUM = 0;
     private static final int HOME_FRAGMENT = 1;
@@ -58,6 +60,17 @@ public class HomeActivity extends AppCompatActivity {
         initImageLoader();
         setupBottomNavigationView();
         setupViewPager();
+    }
+
+    @Override
+    public void onLoadMoreItems() {
+        Log.d(TAG, "onLoadMoreItems: displaying more photos.");
+        HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
+                .findFragmentByTag("android:switcher:" + R.id.viewpager_container
+                        + ":" + mViewPager.getCurrentItem());
+        if (fragment != null) {
+            fragment.displayMorePhotos();
+        }
     }
 
     public void onCommentThreadSelected(Photo photo, String callingActivity) {

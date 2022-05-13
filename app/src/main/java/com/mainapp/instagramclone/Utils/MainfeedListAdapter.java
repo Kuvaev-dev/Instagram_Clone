@@ -46,6 +46,11 @@ import java.util.TimeZone;
 public class MainfeedListAdapter extends ArrayAdapter<Photo> {
     private static final String TAG = "MainfeedListAdapter";
 
+    public interface onLoadMoreItemsListener {
+        void onLoadMoreItems();
+    }
+    onLoadMoreItemsListener loadMoreItemsListener;
+
     private LayoutInflater mInflater;
     private int mLayoutResource;
     private Context mContext;
@@ -108,6 +113,9 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         // Set the current username and likes string
         getCurrentUsername();
         getLikesString(holder);
+
+        // Set the caption
+        holder.caption.setText(getItem(position).getCaption());
 
         // Ser the comments
         List<Comment> comments = getItem(position).getComments();
@@ -200,7 +208,29 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             }
         });
 
+        if (reachedEndOfList(position)) {
+            loadMoreData();
+        }
+
         return convertView;
+    }
+
+    private boolean reachedEndOfList(int position) {
+        return position == getCount() - 1;
+    }
+
+    private void loadMoreData() {
+        try {
+            loadMoreItemsListener = (onLoadMoreItemsListener) getContext();
+        } catch (ClassCastException exception) {
+            Log.e(TAG, "loadMoreData: ClassCastException: " + exception.getMessage());
+        }
+
+        try {
+            loadMoreItemsListener.onLoadMoreItems();
+        } catch (NullPointerException exception) {
+            Log.e(TAG, "loadMoreData: NullPointerException: " + exception.getMessage());
+        }
     }
 
     public class GestureListener extends GestureDetector.SimpleOnGestureListener {
