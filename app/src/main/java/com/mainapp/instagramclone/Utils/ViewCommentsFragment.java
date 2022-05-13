@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.mainapp.instagramclone.Home.HomeActivity;
 import com.mainapp.instagramclone.Models.Comment;
 import com.mainapp.instagramclone.Models.Like;
 import com.mainapp.instagramclone.Models.Photo;
@@ -120,6 +121,15 @@ public class ViewCommentsFragment extends Fragment {
         return simpleDateFormat.format(new Date());
     }
 
+    private String getCallingActivityFromBundle() {
+        Log.d(TAG, "getPhotoFromBundle: arguments: " + getArguments());
+        Bundle bundle = this.getArguments();
+        if (bundle != null)
+            return bundle.getString(getString(R.string.home_activity));
+        else
+            return null;
+    }
+
     private Photo getPhotoFromBundle() {
         Log.d(TAG, "getPhotoFromBundle: arguments: " + getArguments());
         Bundle bundle = this.getArguments();
@@ -146,7 +156,12 @@ public class ViewCommentsFragment extends Fragment {
 
         mBackArrow.setOnClickListener(view -> {
             Log.d(TAG, "setupWidgets: navigating back.");
-            getActivity().getSupportFragmentManager().popBackStack();
+            if (getCallingActivityFromBundle().equals(getString(R.string.home_activity))) {
+                getActivity().getSupportFragmentManager().popBackStack();
+                ((HomeActivity) getActivity()).showLayout();
+            } else {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
         });
     }
 

@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,17 +33,26 @@ import java.util.Objects;
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private static final int ACTIVITY_NUM = 0;
+    private static final int HOME_FRAGMENT = 1;
+
     private final Context context = HomeActivity.this;
 
     // Firebase
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
 
+    private ViewPager mViewPager;
+    private FrameLayout mFrameLayout;
+    private RelativeLayout mRelLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.d(TAG, "onCreate: starting.");
+        mViewPager = findViewById(R.id.viewpager_container);
+        mFrameLayout = findViewById(R.id.container);
+        mRelLayout = findViewById(R.id.relLayoutParent);
 
         setupFirebaseAuth();
         initImageLoader();
@@ -48,12 +60,12 @@ public class HomeActivity extends AppCompatActivity {
         setupViewPager();
     }
 
-    public void onCommentThreadSelected(Photo photo, UserAccountSettings settings) {
+    public void onCommentThreadSelected(Photo photo, String callingActivity) {
         Log.d(TAG, "onCommentThreadSelected: selected a comment thread.");
         ViewCommentsFragment viewCommentsFragment = new ViewCommentsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(getString(R.string.bundle_photo), photo);
-        args.putParcelable(getString(R.string.bundle_user_account_settings), settings);
+        args.putParcelable(getString(R.string.photo), photo);
+        args.putString(getString(R.string.home_activity), getString(R.string.home_activity));
         viewCommentsFragment.setArguments(args);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -77,15 +89,34 @@ public class HomeActivity extends AppCompatActivity {
         sectionPagerAdapter.addFragment(new HomeFragment());
         sectionPagerAdapter.addFragment(new MessagesFragment());
 
-        ViewPager viewPager = findViewById(R.id.container);
-        viewPager.setAdapter(sectionPagerAdapter);
+        mViewPager.setAdapter(sectionPagerAdapter);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(mViewPager);
 
         Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(R.drawable.ic_camera);
         Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(R.drawable.ic_action_menu);
         Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(R.drawable.ic_arrow);
+    }
+
+    public void hideLayout() {
+        Log.d(TAG, "hideLayout: hiding layout.");
+        mRelLayout.setVisibility(View.GONE);
+        mFrameLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void showLayout() {
+        Log.d(TAG, "hideLayout: showing layout.");
+        mRelLayout.setVisibility(View.VISIBLE);
+        mFrameLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (mFrameLayout.getVisibility() == View.VISIBLE) {
+            showLayout();
+        }
     }
 
     /*
@@ -137,6 +168,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         auth.addAuthStateListener(authStateListener);
+        mViewPager.setCurrentItem(HOME_FRAGMENT);
         checkCurrentUser(auth.getCurrentUser());
     }
 

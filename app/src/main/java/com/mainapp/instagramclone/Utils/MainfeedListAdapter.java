@@ -114,7 +114,9 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         holder.comments.setText("View all " + comments.size() + " comments");
         holder.comment.setOnClickListener(view -> {
             Log.d(TAG, "getView: loading comment thread for " + getItem(position).getPhoto_id());
-            ((HomeActivity) mContext).onCommentThreadSelected(getItem(position), holder.settings);
+            ((HomeActivity) mContext).onCommentThreadSelected(getItem(position),
+                    mContext.getString(R.string.home_activity));
+            ((HomeActivity) mContext).hideLayout();
         });
 
         // Set the time it was posted
@@ -165,7 +167,9 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
 
                     holder.settings = Objects.requireNonNull(singleSnapshot.getValue(UserAccountSettings.class));
                     holder.comment.setOnClickListener(view -> {
-                        ((HomeActivity) mContext).onCommentThreadSelected(getItem(position), holder.settings);
+                        ((HomeActivity) mContext).onCommentThreadSelected(getItem(position),
+                                mContext.getString(R.string.home_activity));
+                        ((HomeActivity) mContext).hideLayout();
                     });
                 }
             }
@@ -336,7 +340,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                                     holder.users.append(",");
                                 }
                                 String[] splitUsers = holder.users.toString().split(",");
-                                holder.likedByCurrentUser = holder.users.toString().contains(holder.user.getUsername() + ",");
+                                holder.likedByCurrentUser = holder.users.toString().contains(currentUsername + ",");
                                 int length = splitUsers.length;
                                 if (length == 1) {
                                     holder.likesString = "Liked by " + splitUsers[0];
