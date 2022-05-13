@@ -1,5 +1,7 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +26,7 @@ public class BottomNavigationViewHelper {
         bottomNavigationViewEx.setTextVisibility(false);
     }
 
+    @SuppressLint("NonConstantResourceId")
     public static void enableNavigation(final Context context, final Activity callingActivity, BottomNavigationViewEx bottomNavigationViewEx) {
         bottomNavigationViewEx.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {

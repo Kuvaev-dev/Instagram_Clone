@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Utils;
 
 import android.content.Context;
@@ -30,17 +31,15 @@ import java.util.Objects;
 public class UserListAdapter extends ArrayAdapter<User> {
     private static final String TAG = "UserListAdapter";
 
-    private LayoutInflater mInflater;
-    private List<User> mUsers = null;
-    private int layoutResource;
-    private Context mContext;
+    private final LayoutInflater mInflater;
+    private final int layoutResource;
+    private final Context mContext;
 
     public UserListAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<User> objects) {
         super(context, resource, objects);
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutResource = resource;
-        this.mUsers = objects;
     }
 
     private static class ViewHolder {

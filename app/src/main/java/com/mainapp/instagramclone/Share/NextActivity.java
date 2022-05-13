@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Share;
 
 import android.content.Intent;
@@ -69,18 +70,6 @@ public class NextActivity extends AppCompatActivity {
         });
 
         setImage();
-    }
-
-    private void uploadPhoto() {
-        /*
-            1. Step 1 - Create a data models for photos.
-            2. Step 2 - Add properties to the photo objects: caption, date, imageURL, photo_id, tags, user_id.
-            3. Step 3 - Count the number of photos that the usr already has.
-            4. Step 4:
-                a). Upload the photo to Firebase storage.
-                b). Insert into 'photos' node.
-                c). Insert into 'user_photos' node.
-         */
     }
 
     private void setImage() {

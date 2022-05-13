@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Utils;
 
 import android.content.Context;
@@ -17,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +36,6 @@ import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.Models.UserSettings;
 import com.mainapp.instagramclone.Profile.AccountSettingsActivity;
-import com.mainapp.instagramclone.Profile.ProfileActivity;
 import com.mainapp.instagramclone.R;
 import com.microprogramer.library.CircularImageView;
 
@@ -119,7 +118,7 @@ public class ViewProfileFragment extends Fragment {
             Log.d(TAG, "onCreateView: now following: " + mUser.getUsername());
             FirebaseDatabase.getInstance().getReference()
                     .child(getString(R.string.dbname_following))
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                     .child(mUser.getUser_id())
                     .child(getString(R.string.field_user_id))
                     .setValue(mUser.getUser_id());
@@ -138,7 +137,7 @@ public class ViewProfileFragment extends Fragment {
             Log.d(TAG, "onCreateView: now unfollowing: " + mUser.getUsername());
             FirebaseDatabase.getInstance().getReference()
                     .child(getString(R.string.dbname_following))
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                     .child(mUser.getUser_id())
                     .removeValue();
 
@@ -193,7 +192,7 @@ public class ViewProfileFragment extends Fragment {
         DatabaseReference ppDatabaseReference = FirebaseDatabase.getInstance().getReference();
         Query ppQuery = ppDatabaseReference
                 .child(getString(R.string.dbname_user_photos))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         ppQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -242,7 +241,7 @@ public class ViewProfileFragment extends Fragment {
         setUnfollowing();
         DatabaseReference ifDatabaseReference = FirebaseDatabase.getInstance().getReference();
         Query ifQuery = ifDatabaseReference
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                 .orderByChild(getString(R.string.field_user_id))
                 .equalTo(mUser.getUser_id());
         ifQuery.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Profile;
 
 import android.content.Context;
@@ -32,7 +33,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     public SectionStatePagerAdapter sectionStatePagerAdapter;
     private ViewPager mViewPager;
     private RelativeLayout mRelativeLayout;
-    private final Context context = AccountSettingsActivity.this;
+    private Context context;
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: started.");
         mViewPager = findViewById(R.id.viewpager_container);
         mRelativeLayout = findViewById(R.id.relLayout1);
+        context = AccountSettingsActivity.this;
 
         setupSettingsList();
         setupBottomNavigationView();

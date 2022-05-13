@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Home;
 
 import android.os.Bundle;
@@ -19,17 +20,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mainapp.instagramclone.Models.Comment;
-import com.mainapp.instagramclone.Models.Like;
 import com.mainapp.instagramclone.Models.Photo;
-import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.MainfeedListAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -66,7 +63,7 @@ public class HomeFragment extends Fragment {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot singleSnapshot : snapshot.getChildren()) {
+                for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
                     Log.d(TAG, "onDataChange: found user: " +
                             singleSnapshot.child(getString(R.string.field_user_id)).getValue());
                     mFollowing.add(Objects.requireNonNull(singleSnapshot.child(getString(
@@ -103,6 +100,7 @@ public class HomeFragment extends Fragment {
                         photo.setCaption(Objects.requireNonNull(objectMap.get(getString(R.string.field_caption))).toString());
                         photo.setTags(Objects.requireNonNull(objectMap.get(getString(R.string.field_tags))).toString());
                         photo.setPhoto_id(Objects.requireNonNull(objectMap.get(getString(R.string.field_photo_id))).toString());
+                        photo.setUser_id(Objects.requireNonNull(objectMap.get(getString(R.string.field_user_id))).toString());
                         photo.setDate_created(Objects.requireNonNull(objectMap.get(getString(R.string.field_date_created))).toString());
                         photo.setImage_path(Objects.requireNonNull(objectMap.get(getString(R.string.field_image_path))).toString());
 
@@ -118,9 +116,8 @@ public class HomeFragment extends Fragment {
                         mPhotos.add(photo);
                     }
 
-                    if (count >= mFollowing.size() - 1) {
+                    if (count >= mFollowing.size() - 1)
                         displayPhotos();
-                    }
                 }
 
                 @Override
@@ -139,9 +136,8 @@ public class HomeFragment extends Fragment {
                         object2.getDate_created().compareTo(object1.getDate_created()));
 
                 int iterations = mPhotos.size();
-                if (iterations > 10) {
+                if (iterations > 10)
                     iterations = 10;
-                }
 
                 mResults = 10;
                 for (int i = 0; i < iterations; i++) {

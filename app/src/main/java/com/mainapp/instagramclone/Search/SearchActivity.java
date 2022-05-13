@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Search;
 
 import android.content.Context;
@@ -8,12 +9,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,7 +45,6 @@ public class SearchActivity extends AppCompatActivity {
     private ListView mListView;
 
     private List<User> userList;
-    private UserListAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
         userList.clear();
         // Update the users list
         if (keyword.length() == 0) {
-
+            // Nothing to do
         } else {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
             Query query = databaseReference
@@ -118,7 +115,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void updateUsersList() {
         Log.d(TAG, "updateUsersList: updating users list.");
-        adapter = new UserListAdapter(context, R.layout.layout_user_list_item, userList);
+        UserListAdapter adapter = new UserListAdapter(context, R.layout.layout_user_list_item, userList);
         mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener((adapterView, view, position, id) -> {

@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Utils;
 
 import android.content.Context;
@@ -36,8 +37,8 @@ import java.util.TimeZone;
 public class CommentListAdapter extends ArrayAdapter<Comment> {
     private static final String TAG = "CommentListAdapter";
 
-    private LayoutInflater mInflater;
-    private int layoutResource;
+    private final LayoutInflater mInflater;
+    private final int layoutResource;
     private Context mContext;
     
     public CommentListAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Comment> objects) {

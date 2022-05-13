@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Profile;
 
 import android.content.Intent;
@@ -24,11 +25,8 @@ public class ProfileActivity extends AppCompatActivity implements
         ViewPostFragment.onCommentThreadSelectedListener,
         ViewProfileFragment.onGridImageSelectedListener {
     private static final String TAG = "ProfileActivity";
-    private static final int ACTIVITY_NUM = 4;
-    private static final int NUM_GRID_COLUMNS = 3;
 
-    private ImageView profilePhoto;
-    private ProgressBar mProgressBar;
+    public ProfileActivity() {}
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

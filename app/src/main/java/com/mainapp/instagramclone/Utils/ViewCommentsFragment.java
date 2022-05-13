@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Utils;
 
 import android.content.Context;
@@ -27,7 +28,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mainapp.instagramclone.Home.HomeActivity;
 import com.mainapp.instagramclone.Models.Comment;
-import com.mainapp.instagramclone.Models.Like;
 import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.R;
 
@@ -35,7 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -98,7 +97,7 @@ public class ViewCommentsFragment extends Fragment {
         Comment comment = new Comment();
         comment.setComment(newComment);
         comment.setDate_created(getTimestamp());
-        comment.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        comment.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
 
         assert commentId != null;
         mDatabaseReference.child(getString(R.string.dbname_photos))
@@ -156,7 +155,7 @@ public class ViewCommentsFragment extends Fragment {
 
         mBackArrow.setOnClickListener(view -> {
             Log.d(TAG, "setupWidgets: navigating back.");
-            if (getCallingActivityFromBundle().equals(getString(R.string.home_activity))) {
+            if (Objects.equals(getCallingActivityFromBundle(), getString(R.string.home_activity))) {
                 getActivity().getSupportFragmentManager().popBackStack();
                 ((HomeActivity) getActivity()).showLayout();
             } else {
@@ -238,14 +237,6 @@ public class ViewCommentsFragment extends Fragment {
                                     mPhoto = photo;
 
                                     setupWidgets();
-
-//                    List<Like> likesList = new ArrayList<>();
-//                    for (DataSnapshot ds: singleSnapshot.child(getString(R.string.field_likes)).getChildren()) {
-//                        Like like = new Like();
-//                        like.setUser_id(ds.getValue(Like.class).getUser_id());
-//                        likesList.add(like);
-//                    }
-
                                 }
                             }
 

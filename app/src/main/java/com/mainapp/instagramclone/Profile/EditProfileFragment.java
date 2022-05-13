@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Profile;
 
 import android.content.Intent;
@@ -37,7 +38,8 @@ import com.microprogramer.library.CircularImageView;
 
 import java.util.Objects;
 
-public class EditProfileFragment extends Fragment implements ConfirmPasswordDialog.onConfirmPasswordListener {
+public class EditProfileFragment extends Fragment implements
+        ConfirmPasswordDialog.onConfirmPasswordListener {
     private static final String TAG = "EditProfileFragment";
 
     private EditText editDisplayName, editUsername, editWebsite, editDescription, editEmail, editPhoneNumber;

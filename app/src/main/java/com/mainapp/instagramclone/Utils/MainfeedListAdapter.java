@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Utils;
 
 import android.content.Context;
@@ -35,7 +36,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -51,10 +51,10 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
     }
     onLoadMoreItemsListener loadMoreItemsListener;
 
-    private LayoutInflater mInflater;
-    private int mLayoutResource;
+    private final LayoutInflater mInflater;
+    private final int mLayoutResource;
     private Context mContext;
-    private DatabaseReference mDatabaseReference;
+    private final DatabaseReference mDatabaseReference;
     private String currentUsername;
 
     public MainfeedListAdapter(@NonNull Context context, int resource, @NonNull List<Photo> objects) {
@@ -258,8 +258,9 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                     for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
                         String keyId = singleSnapshot.getKey();
                         // If the user already liked a photo
-                        if (mHolder.likedByCurrentUser && singleSnapshot.getValue(Like.class).getUser_id()
-                                .equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        if (mHolder.likedByCurrentUser && Objects.requireNonNull(singleSnapshot
+                                .getValue(Like.class)).getUser_id()
+                                .equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
                             assert keyId != null;
 
                             mDatabaseReference.child(mContext.getString(R.string.dbname_photos))
@@ -301,7 +302,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         Log.d(TAG, "addNewLike: adding new like.");
         String newLikeKey = mDatabaseReference.push().getKey();
         Like like = new Like();
-        like.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        like.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
 
         assert newLikeKey != null;
         mDatabaseReference.child(mContext.getString(R.string.dbname_photos))
@@ -325,7 +326,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         Query query = databaseReference
                 .child(mContext.getString(R.string.dbname_users))
                 .orderByChild(mContext.getString(R.string.field_user_id))
-                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                .equalTo(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

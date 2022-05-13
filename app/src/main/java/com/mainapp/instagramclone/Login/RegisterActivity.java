@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Login;
 
 import android.content.Context;
@@ -119,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 mUsername = username + append;
                 // Add new user to the database
-                firebaseMethods.addNewUser(email, username, "", "", "");
+                firebaseMethods.addNewUser(email, mUsername, "", "", "");
                 Toast.makeText(context, "Signup successful. Sending verification email.", Toast.LENGTH_SHORT).show();
                 auth.signOut();
             }

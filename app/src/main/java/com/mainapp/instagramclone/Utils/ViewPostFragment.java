@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Utils;
 
 import android.content.Context;
@@ -32,10 +33,6 @@ import com.mainapp.instagramclone.Models.Photo;
 import com.mainapp.instagramclone.Models.User;
 import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.R;
-import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
-import com.mainapp.instagramclone.Utils.FirebaseMethods;
-import com.mainapp.instagramclone.Utils.SquareImageView;
-import com.mainapp.instagramclone.Utils.UniversalImageLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,8 +56,16 @@ public class ViewPostFragment extends Fragment {
     onCommentThreadSelectedListener mOnCommentThreadSelectedListener;
 
     private BottomNavigationViewEx bottomNavigationViewEx;
-    private TextView mBackLabel, mCaption, mUsername, mTimestamp, mLikes, mComments;
-    private ImageView mBackArrow, mEllipses, mHeartRed, mHeartWhite, mProfileImage, mComment;
+    private TextView mCaption;
+    private TextView mUsername;
+    private TextView mTimestamp;
+    private TextView mLikes;
+    private TextView mComments;
+    private ImageView mBackArrow;
+    private ImageView mHeartRed;
+    private ImageView mHeartWhite;
+    private ImageView mProfileImage;
+    private ImageView mComment;
     private SquareImageView mPostImage;
 
     private int mActivityNum = 0;
@@ -93,11 +98,11 @@ public class ViewPostFragment extends Fragment {
         mPostImage = view.findViewById(R.id.post_image);
         bottomNavigationViewEx = view.findViewById(R.id.bottomNavViewBar);
         mBackArrow = view.findViewById(R.id.backArrow);
-        mBackLabel = view.findViewById(R.id.tvBackLabel);
+        TextView mBackLabel = view.findViewById(R.id.tvBackLabel);
         mCaption = view.findViewById(R.id.image_caption);
         mUsername = view.findViewById(R.id.username);
         mTimestamp = view.findViewById(R.id.image_time_posted);
-        mEllipses = view.findViewById(R.id.ivEllipses);
+        ImageView mEllipses = view.findViewById(R.id.ivEllipses);
         mHeartRed = view.findViewById(R.id.image_heart_red);
         mLikes = view.findViewById(R.id.image_likes);
         mHeartWhite = view.findViewById(R.id.image_heart);
@@ -256,7 +261,7 @@ public class ViewPostFragment extends Fragment {
         Query query = databaseReference
                 .child(getString(R.string.dbname_users))
                 .orderByChild(getString(R.string.field_user_id))
-                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                .equalTo(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -292,8 +297,8 @@ public class ViewPostFragment extends Fragment {
                     for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
                         String keyId = singleSnapshot.getKey();
                         // If the user already liked a photo
-                        if (likedByCurrentUser && singleSnapshot.getValue(Like.class).getUser_id()
-                                .equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        if (likedByCurrentUser && Objects.requireNonNull(singleSnapshot.getValue(Like.class)).getUser_id()
+                                .equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
                             assert keyId != null;
 
                             mDatabaseReference.child(getString(R.string.dbname_photos))
@@ -335,7 +340,7 @@ public class ViewPostFragment extends Fragment {
         Log.d(TAG, "addNewLike: adding new like.");
         String newLikeKey = mDatabaseReference.push().getKey();
         Like like = new Like();
-        like.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        like.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
 
         assert newLikeKey != null;
         mDatabaseReference.child(getString(R.string.dbname_photos))

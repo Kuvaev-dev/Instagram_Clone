@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Profile;
 
 import android.content.Intent;
@@ -33,7 +34,6 @@ public class SignOutFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_out, container, false);
-        TextView tvSignOut = view.findViewById(R.id.tvConfirmSignOut);
         progressBar = view.findViewById(R.id.progressbar);
         tvSigningOut = view.findViewById(R.id.tvSigningOut);
         Button buttonConfirmSignOut = view.findViewById(R.id.btnConfirmSignOut);

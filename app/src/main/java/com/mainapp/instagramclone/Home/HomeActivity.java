@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Home;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.mainapp.instagramclone.Login.LoginActivity;
 import com.mainapp.instagramclone.Models.Photo;
-import com.mainapp.instagramclone.Models.UserAccountSettings;
 import com.mainapp.instagramclone.R;
 import com.mainapp.instagramclone.Utils.BottomNavigationViewHelper;
 import com.mainapp.instagramclone.Utils.MainfeedListAdapter;
@@ -68,9 +68,8 @@ public class HomeActivity extends AppCompatActivity implements
         HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
                 .findFragmentByTag("android:switcher:" + R.id.viewpager_container
                         + ":" + mViewPager.getCurrentItem());
-        if (fragment != null) {
+        if (fragment != null)
             fragment.displayMorePhotos();
-        }
     }
 
     public void onCommentThreadSelected(Photo photo, String callingActivity) {
@@ -127,9 +126,8 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (mFrameLayout.getVisibility() == View.VISIBLE) {
+        if (mFrameLayout.getVisibility() == View.VISIBLE)
             showLayout();
-        }
     }
 
     /*

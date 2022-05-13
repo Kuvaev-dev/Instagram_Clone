@@ -63,13 +63,7 @@ public class ProfileFragment extends Fragment {
     private ImageView profileMenu;
     private Context context;
     private BottomNavigationViewEx bottomNavigationViewEx;
-    private TextView tDisplayName;
-    private TextView tUsername;
-    private TextView tWebsite;
-    private TextView tDescription;
-    private TextView tPosts;
-    private TextView tFollowers;
-    private TextView tFollowing;
+    private TextView tDisplayName, tUsername, tWebsite, tDescription, tPosts, tFollowers, tFollowing;
     private CircularImageView profilePhoto;
     private ProgressBar progressBar;
     private GridView gridView;
@@ -272,8 +266,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setProfileWidgets(UserSettings userSettings) {
-        /*Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from database: " + userSettings.toString());
-        User user = userSettings.getUser();*/
+        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from database: " + userSettings.toString());
         UserAccountSettings userAccountSettings = userSettings.getUserAccountSettings();
         UniversalImageLoader.setImage(userAccountSettings.getProfile_photo(), profilePhoto, null, "");
         tDisplayName.setText(userAccountSettings.getDisplay_name());

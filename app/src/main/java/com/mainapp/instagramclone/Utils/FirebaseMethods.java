@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Utils;
 
 import android.content.Context;
@@ -231,23 +232,6 @@ public class FirebaseMethods {
                 .setValue(email);
     }
 
-//    public boolean checkIfUsernameExists(String username, DataSnapshot dataSnapshot) {
-//        Log.d(TAG, "checkIfUsernameExists: check if " + username + " already exists.");
-//        User user = new User();
-//
-//        for (DataSnapshot ds: dataSnapshot.child(userId).getChildren()) {
-//            Log.d(TAG, "checkIfUsernameExists: data snapshot: " + ds);
-//            user.setUsername(Objects.requireNonNull(ds.getValue(User.class)).getUsername());
-//            Log.d(TAG, "checkIfUsernameExists: username: " + user.getUsername());
-//
-//            if (StringManipulation.expandUsername(user.getUsername()).equals(username)) {
-//                Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + user.getUsername());
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     public void registerNewEmail(final String email, String password, final String username) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
@@ -268,7 +252,7 @@ public class FirebaseMethods {
             user.sendEmailVerification()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-
+                        // Nothing to do
                     } else {
                         Toast.makeText(mContext, "Couldn't send verification email.", Toast.LENGTH_SHORT).show();
                     }

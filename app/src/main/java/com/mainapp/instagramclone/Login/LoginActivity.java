@@ -1,5 +1,7 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         authInfo = findViewById(R.id.pleaseWait);
         editEmail = findViewById(R.id.input_email);
         editPassword = findViewById(R.id.input_password);
+        Context context = LoginActivity.this;
         Log.d(TAG, "onCreate: started.");
 
         authInfo.setVisibility(View.GONE);
@@ -75,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "onComplete: failed", task.getException());
                             Toast.makeText(LoginActivity.this, "Failed to Authenticate", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                            authInfo.setVisibility(View.GONE);
                         } else {
                             try {
                                 assert user != null;
@@ -92,8 +97,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.e(TAG, "onClick: NullPointerException: " + exception.getMessage());
                             }
                         }
-                        progressBar.setVisibility(View.GONE);
-                        authInfo.setVisibility(View.GONE);
                     });
             }
         });

@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Share;
 
 import android.content.Intent;
@@ -21,7 +22,6 @@ import com.mainapp.instagramclone.Utils.Permissions;
 public class PhotoFragment extends Fragment {
     private static final String TAG = "PhotoFragment";
     private static final int PHOTO_FRAGMENT_NUM = 1;
-    private static final int GALLERY_FRAGMENT_NUM = 2;
     private static final int CAMERA_REQUEST_CODE = 5;
 
     @Nullable

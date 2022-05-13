@@ -1,3 +1,4 @@
+// 13.05.2022 - Reviewed. All Done.
 package com.mainapp.instagramclone.Share;
 
 import android.content.Intent;
@@ -89,15 +90,15 @@ public class GalleryFragment extends Fragment {
         FilePaths filePaths = new FilePaths();
         // Check for other folders inside 'storage/emulated/0/pictures'
         directories = FileSearch.getDirectoryPaths(filePaths.PICTURES);
+        directories.add(filePaths.CAMERA);
 
         ArrayList<String> directoryNames = new ArrayList<>();
         for (int i = 0; i < directories.size(); i++) {
+            Log.d(TAG, "init: directory: " + directories.get(i));
             int index = directories.get(i).lastIndexOf("/");
             String substring = directories.get(i).substring(index).replace("/", "");
             directoryNames.add(substring);
         }
-
-        directories.add(filePaths.CAMERA);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, directoryNames);
