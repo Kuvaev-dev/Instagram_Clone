@@ -32,16 +32,17 @@
         android:background="@drawable/white_grey_border_top">
 
         <EditText
+            android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:background="@null"
-            android:layout_marginEnd="50dp"
-            android:layout_marginStart="5dp"
             android:layout_centerVertical="true"
-            android:hint="Add a comment..."
-            android:textSize="14sp"
-            android:id="@+id/comment"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="50dp"
+            android:background="@null"
+            android:hint="@string/fragment_view_comments_add_a_comment_text"
+            android:minHeight="48dp"
+            android:padding="2dp"
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="40dp"

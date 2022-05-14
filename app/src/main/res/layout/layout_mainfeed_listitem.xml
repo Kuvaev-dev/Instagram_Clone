@@ -21,14 +21,14 @@
                 android:layout_marginTop="20dp"
                 app:civ_border_color="@color/black"
                 app:civ_border_width="0.5dp"
-                android:layout_marginLeft="25dp"
+                android:layout_marginStart="25dp"
                 android:layout_centerVertical="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text="__storm__"
+                android:text="@string/layout_mainfeed_profile_username"
                 android:layout_toEndOf="@+id/profile_photo"
                 android:layout_marginStart="10dp"
                 android:layout_centerVertical="true"
@@ -107,7 +107,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Liked by Mom, Dad, Grandpa and 30 others"
+                android:text="@string/layout_mainfeed_likes_string"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:id="@+id/image_likes"/>
@@ -115,7 +115,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hello"
+                android:text="@string/layout_mainfeed_photo_desc"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:id="@+id/image_caption"
@@ -125,7 +125,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View all 3 comments"
+                android:text="@string/layout_mainfeed_photo_comments"
                 android:textColor="@color/grey"
                 android:textSize="18sp"
                 android:layout_below="@+id/image_caption"
@@ -135,7 +135,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3 DAYS AGO"
+                android:text="@string/layout_mainfeed_post_date"
                 android:textColor="@color/grey"
                 android:textSize="18sp"
                 android:layout_below="@+id/image_comments_link"

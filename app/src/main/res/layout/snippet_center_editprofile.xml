@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Change Photo"
+                android:text="@string/sn_center_editprofile_change_photo_link"
                 android:id="@+id/changeProfilePhoto"
                 android:layout_below="@id/profile_photo"
                 android:layout_centerHorizontal="true"
@@ -53,7 +53,7 @@
                     android:layout_marginStart="40dp"
                     android:background="@null"
                     android:inputType="textNoSuggestions"
-                    android:hint="Username"/>
+                    android:hint="@string/sn_center_editprofile_username_hint"/>
             </RelativeLayout>
 
             <!-- Display Name Section -->
@@ -79,7 +79,7 @@
                     android:layout_marginStart="40dp"
                     android:background="@null"
                     android:inputType="textNoSuggestions"
-                    android:hint="Display Name"/>
+                    android:hint="@string/sn_center_editprofile_display_name_hint"/>
             </RelativeLayout>
 
             <!-- Website Section -->
@@ -105,7 +105,7 @@
                     android:layout_marginStart="40dp"
                     android:background="@null"
                     android:inputType="textNoSuggestions"
-                    android:hint="Website"/>
+                    android:hint="@string/sn_center_editprofile_website_hint"/>
             </RelativeLayout>
 
             <!-- Website Section -->
@@ -131,14 +131,14 @@
                     android:layout_marginStart="40dp"
                     android:background="@null"
                     android:inputType="textNoSuggestions"
-                    android:hint="Description"/>
+                    android:hint="@string/sn_center_editprofile_description_hint"/>
             </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="25sp"
-                android:text="PRIVATE INFORMATION"
+                android:text="@string/sn_center_editprofile_private_info_text"
                 android:layout_below="@id/relLayout4"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
@@ -169,7 +169,7 @@
                     android:layout_marginStart="40dp"
                     android:background="@null"
                     android:inputType="textEmailAddress"
-                    android:hint="Email"/>
+                    android:hint="@string/sn_center_editprofilee_email_hint"/>
             </RelativeLayout>
 
             <!-- Phone Number Section -->
@@ -195,7 +195,7 @@
                     android:layout_marginStart="40dp"
                     android:background="@null"
                     android:inputType="phone"
-                    android:hint="Phone Number"/>
+                    android:hint="@string/sn_center_editprofile_phone_number_hint"/>
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>

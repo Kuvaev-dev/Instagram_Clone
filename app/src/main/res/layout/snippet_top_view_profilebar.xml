@@ -19,7 +19,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="__storm__"
+                    android:text="@string/sn_top_view_profilebar_username_text"
                     android:textSize="20sp"
                     android:textColor="@color/black"
                     android:id="@+id/username"/>
@@ -27,13 +27,11 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginEnd="20dp"
                     android:layout_centerVertical="true"
                     android:id="@+id/profileMenu"
                     android:src="@drawable/ic_ellipses"/>
-
-
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

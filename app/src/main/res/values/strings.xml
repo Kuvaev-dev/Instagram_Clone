@@ -1,4 +1,6 @@
 <resources>
+    <!-- STRING VALUES -->
+
     <!-- App -->
     <string name="app_name">InstagramClone</string>
 
@@ -54,8 +56,144 @@
     <!-- Strings -->
     <string name="gallery">GALLERY</string>
     <string name="photo">PHOTO</string>
-    <string name="fr_photo_string_open_camera">Open Camera</string>
+    <string name="fragment_photo_string_open_camera">Open Camera</string>
     <string name="selected_image">selected_image</string>
     <string name="return_to_fragment">return_to_fragment</string>
     <string name="selected_bitmap">selected_bitmap</string>
+
+    <!-- VIEWS STRING RESOURCES -->
+
+    <!-- activity_login -->
+    <string name="activity_login_email_input_hint">Email</string>
+    <string name="activity_login_password_input_hint">Password</string>
+    <string name="activity_login_button_text">Login</string>
+    <string name="activity_login_reg_new_account_link">No account yet? Create one</string>
+    <string name="activity_login_please_wait_text">Please, wait…</string>
+    <string name="activity_login_instagram_logo_desc">Instagram Logo</string>
+
+    <!-- activity_next -->
+    <string name="activity_next_photo_description_hint">Write a description…</string>
+
+    <!-- activity_register -->
+    <string name="activity_register_a_new_account_text">REGISTER A NEW ACCOUNT</string>
+    <string name="activity_register_email_input_hint">Email</string>
+    <string name="activity_register_full_name_hint">Full Name</string>
+    <string name="activity_register_password_input_hint">Password</string>
+    <string name="activity_register_button_text">Register</string>
+    <string name="activity_register_please_wait_text">Please, wait…</string>
+
+    <!-- dialog_confirm_password -->
+    <string name="dialog_confirm_password_text">Confirm Password</string>
+    <string name="dialog_confirmation_password_hint">Password</string>
+    <string name="dialog_confirm_password_cancel_text">CANCEL</string>
+    <string name="dialog_confirm_password_conf_text">CONFIRM</string>
+
+    <!-- camera_fragment -->
+    <string name="camera_fragment_text">Camera fragment</string>
+
+    <!-- messages_fragment -->
+    <string name="messages_fragment_text">Messages fragment</string>
+
+    <!-- fragment_sign_out -->
+    <string name="fragment_sign_out_confirm_text">Are you sure you want to Sign Out?</string>
+    <string name="fragment_sign_out_button_text">Sign Out</string>
+    <string name="fragment_signing_out_text">Signing Out…</string>
+
+    <!-- fragment_view_comments -->
+    <string name="fragment_view_comments_add_a_comment_text">Add a comment…</string>
+
+    <!-- layout_center_accountsettings -->
+    <string name="layout_center_account_settings_text">Account Settings</string>
+
+    <!-- layout_center_profile -->
+    <string name="layout_center_profile_fullname_text">Kuvaev Nikita</string>
+    <string name="layout_center_profile_description_text">I\'m 19 y. o.</string>
+    <string name="layout_center_profile_website_text">https://github.com/Kuvaev-dev</string>
+
+    <!-- layout_center_view_profile -->
+    <string name="layout_center_view_profile_fullname_text">Kuvaev Nikita</string>
+    <string name="layout_center_view_profile_desc_text">I\'m 19 y. o.</string>
+    <string name="layout_center_view_profile_website_text">https://github.com/Kuvaev-dev</string>
+
+    <!-- layout_comment -->
+    <string name="layout_comment_username">leeandlie</string>
+    <string name="layout_comment_text">You\'re the best</string>
+    <string name="layout_comment_date">1 d.</string>
+    <string name="layout_comment_likes">100 likes</string>
+    <string name="layout_comment_reply">Reply</string>
+
+    <!-- layout_mainfeed_listitem -->
+    <string name="layout_mainfeed_profile_username">__storm__</string>
+    <string name="layout_mainfeed_likes_string">Liked by Mom, Dad, Grandpa and 30 others</string>
+    <string name="layout_mainfeed_photo_desc">Hello</string>
+    <string name="layout_mainfeed_photo_comments">View all 3 comments</string>
+    <string name="layout_mainfeed_post_date">3 DAYS AGO</string>
+
+    <!-- layout_view_post -->
+    <string name="layout_view_post_username">__storm__</string>
+    <string name="layout_view_post_likes_string">Liked by Mom, Dad, Brother and 999 others</string>
+    <string name="layout_view_post_desc">I\'m Very Lazy…</string>
+    <string name="layout_view_post_comments">View all 99 comments</string>
+    <string name="layout_view_post_datetime">POSTED 1 DAY AGO</string>
+
+    <!-- snippet_center_editprofile -->
+    <string name="sn_center_editprofile_change_photo_link">Change Photo</string>
+    <string name="sn_center_editprofile_username_hint">Username</string>
+    <string name="sn_center_editprofile_display_name_hint">Display Name</string>
+    <string name="sn_center_editprofile_website_hint">Website</string>
+    <string name="sn_center_editprofile_description_hint">Description</string>
+    <string name="sn_center_editprofile_private_info_text">PRIVATE INFORMATION</string>
+    <string name="sn_center_editprofilee_email_hint">Email</string>
+    <string name="sn_center_editprofile_phone_number_hint">Phone Number</string>
+
+    <!-- snippet_comments_toolbar -->
+    <string name="sn_comments_text">Comments</string>
+
+    <!-- snippet_post_toolbar -->
+    <string name="sn_post_toolbar_photo_text">Photo</string>
+
+    <!-- snippet_searchbar -->
+    <string name="sn_searchbar_search_hint">Search…</string>
+
+    <!-- snippet_top_gallery_toolbar -->
+    <string name="sn_top_gallery_toolbar_spinner_text">Gallery</string>
+    <string name="sn_top_gallery_toolbar_next_link">Next</string>
+
+    <!-- snippet_top_next_toolbar -->
+    <string name="sn_top_next_toolbar_share_text">Share</string>
+
+    <!-- snippet -->
+    <string name="sn_profile_posts_text">5</string>
+    <string name="sn_profile_following_text">5</string>
+    <string name="sn_profile_edit_your_profile_text">Edit your profile</string>
+
+    <!-- snippet_top_accountsettings_toolbar -->
+    <string name="sn_top_acc_settings_toolbar_options_text">Options</string>
+    <string name="sn_top_edit_profile_toolbar_text">Edit Profile</string>
+
+    <!-- snippet_top_profile -->
+    <string name="sn_top_profile_posts_text">Posts</string>
+    <string name="sn_top_profile_following_text">Following</string>
+    <string name="sn_top_profile_subs_count">1 000</string>
+    <string name="sn_top_profile_subs_text">Followers</string>
+    <string name="sn_top_profile_edit_your_profile_text">Edit your profile</string>
+    <string name="sn_top_profile_following_count">5</string>
+    <string name="sn_top_profile_posts_count">5</string>
+
+    <!-- snippet_top_profilebar -->
+    <string name="sn_top_profilebar_username_text">__storm__</string>
+
+    <!-- snippet_top_view_profile -->
+    <string name="sn_top_view_profile_posts_count">5</string>
+    <string name="sn_top_view_profile_posts_text">Posts</string>
+    <string name="sn_top_view_profile_following_count">5</string>
+    <string name="sn_top_view_profile_following_text">Following</string>
+    <string name="sn_top_view_profile_followers_count">1 000</string>
+    <string name="sn_top_view_profile_followers_text">Followers</string>
+    <string name="sn_top_view_profile_follow_btn_text">Follow</string>
+    <string name="sn_top_view_profile_unfollow_btn_text">Unfollow</string>
+    <string name="sn_top_view_profile_edit_profile_btn_text">Edit your profile</string>
+
+    <!-- snippet_top_view_profilebar -->
+    <string name="sn_top_view_profilebar_username_text">__storm__</string>
 </resources>

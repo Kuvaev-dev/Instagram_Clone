@@ -32,7 +32,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="leeandlie"
+                android:text="@string/layout_comment_username"
                 android:id="@+id/comment_username"
                 android:layout_marginStart="15dp"
                 android:textColor="@color/black"
@@ -42,7 +42,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You're the best"
+                android:text="@string/layout_comment_text"
                 android:layout_marginStart="5dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -56,14 +56,14 @@
                 android:layout_below="@id/comment"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
-                android:text="1 d."
+                android:text="@string/layout_comment_date"
                 android:textColor="@color/grey"
                 android:textSize="14sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100 likes"
+                android:text="@string/layout_comment_likes"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/grey"
@@ -76,7 +76,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reply"
+                android:text="@string/layout_comment_reply"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/grey"

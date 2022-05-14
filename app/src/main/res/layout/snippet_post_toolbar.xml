@@ -1,5 +1,4 @@
-<merge xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -28,9 +27,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:textSize="20sp"
-                    android:layout_toRightOf="@id/backArrow"
-                    android:layout_marginLeft="30dp"
-                    android:text="Photo"
+                    android:layout_toEndOf="@id/backArrow"
+                    android:layout_marginStart="30dp"
+                    android:text="@string/sn_post_toolbar_photo_text"
                     android:textColor="@color/black"
                     android:id="@+id/tvBackLabel"/>
             </RelativeLayout>

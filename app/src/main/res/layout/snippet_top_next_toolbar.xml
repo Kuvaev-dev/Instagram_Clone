@@ -26,7 +26,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Share"
+                    android:text="@string/sn_top_next_toolbar_share_text"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="15dp"
                     android:textSize="20sp"
